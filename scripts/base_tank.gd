@@ -1,13 +1,24 @@
 extends KinematicBody2D
 
-var speed = 0.75
+var speed_fwd = 0.75
+var speed_rev = 0.45
 var rot_speed = 1.5
 var rot_dir = 0
+var reverse_mult = 0.6
 var velocity = Vector2(0,0)
+var cooldown = 0.5
+
+var bullet = load("res://scenes/bullet.tscn")
+
+var can_shoot = true
+
+onready var b_cont = get_node("../bullet_container")
+onready var shadow = $shadow
+onready var shot_timer = $shot_timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	shot_timer.wait_time = cooldown
 
 func get_controls():
 	rot_dir = 0
@@ -18,10 +29,23 @@ func get_controls():
 	elif Input.is_action_pressed("right"):
 		rot_dir = 1
 	if Input.is_action_pressed("forward"):
-		velocity = Vector2(speed, 0).rotated(rotation)
+		velocity = Vector2(speed_fwd, 0).rotated(rotation)
 	if Input.is_action_pressed("back"):
-		velocity = Vector2(-speed * 0.75, 0).rotated(rotation)
+		velocity = Vector2(-speed_rev, 0).rotated(rotation)
+	if Input.is_action_pressed("shoot") and can_shoot:
+		can_shoot = false
+		var b = bullet.instance()
+		b_cont.add_child(b)
+		shot_timer.start()
+		b.start(global_position + Vector2(30,0).rotated(rotation), Vector2(1, 0).rotated(rotation))
+		
 
+
+func _process(delta):
+	offset_shadow()
+
+func offset_shadow():
+	shadow.position = Vector2(4,4).rotated(-rotation)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -30,3 +54,7 @@ func _physics_process(delta):
 	rotation += rot_dir * rot_speed * delta
 	move_and_collide(velocity)
 	
+
+
+func _on_shot_timer_timeout():
+	can_shoot = true

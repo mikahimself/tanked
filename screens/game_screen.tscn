@@ -13,5 +13,7 @@
 [node name="TileMap2" parent="level_container" instance=ExtResource( 2 )]
 
 [node name="base_tank" parent="." instance=ExtResource( 3 )]
-position = Vector2( 67, 443 )
+position = Vector2( 63, 368 )
 z_index = 1
+
+[node name="bullet_container" type="Node" parent="."]

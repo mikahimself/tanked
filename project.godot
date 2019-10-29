@@ -19,6 +19,13 @@ config/name="Tank"
 run/main_scene="res://screens/game_screen.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/width=768
+window/size/height=432
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+
 [input]
 
 forward={
