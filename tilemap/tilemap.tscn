@@ -1,38 +1,48 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://tilemap/tanked.png" type="Texture" id=1]
 
-[sub_resource type="CircleShape2D" id=11]
+[sub_resource type="NavigationPolygon" id=12]
+vertices = PoolVector2Array( -16, -16, 16, -16, 16, 16, -16, 16 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
+outlines = [ PoolVector2Array( -16, -16, 16, -16, 16, 16, -16, 16 ) ]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 12, 16 )
+[sub_resource type="CircleShape2D" id=1]
+
+[sub_resource type="NavigationPolygon" id=13]
+vertices = PoolVector2Array( -16, -10, -16, -16, 16, -16, 10, -10, -16, 16, -9, -10, -9, 10, 16, 16, 10, 10 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 4, 0, 5, 6 ), PoolIntArray( 7, 4, 6, 8 ), PoolIntArray( 2, 7, 8, 3 ) ]
+outlines = [ PoolVector2Array( -16, -16, 16, -16, 16, 16, -16, 16, -16, -10, -9, -10, -9, 10, 10, 10, 10, -10, -16, -10 ) ]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 16, 12 )
-
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 16, 8 )
-
-[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 12, 16 )
 
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 16, 12 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 16, 12 )
+
 [sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 8, 16 )
+extents = Vector2( 12, 16 )
 
 [sub_resource type="RectangleShape2D" id=6]
-extents = Vector2( 16, 8 )
+extents = Vector2( 8, 16 )
 
 [sub_resource type="RectangleShape2D" id=7]
-extents = Vector2( 10, 13 )
+extents = Vector2( 16, 8 )
 
 [sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 13, 10 )
+extents = Vector2( 8, 13 )
 
 [sub_resource type="RectangleShape2D" id=9]
-extents = Vector2( 10, 13 )
+extents = Vector2( 13, 8 )
 
 [sub_resource type="RectangleShape2D" id=10]
-extents = Vector2( 14, 10 )
+extents = Vector2( 8, 13 )
+
+[sub_resource type="RectangleShape2D" id=11]
+extents = Vector2( 13, 8 )
 
 [node name="tilemap" type="Node2D"]
 
@@ -41,6 +51,9 @@ position = Vector2( 32, 0 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 2, 3, 32, 32 )
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="ground"]
+navpoly = SubResource( 12 )
 
 [node name="ground_mine" type="Sprite" parent="."]
 position = Vector2( 96, 0 )
@@ -51,7 +64,10 @@ region_rect = Rect2( 36, 3, 32, 32 )
 [node name="Area2D" type="Area2D" parent="ground_mine"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ground_mine/Area2D"]
-shape = SubResource( 11 )
+shape = SubResource( 1 )
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="ground_mine"]
+navpoly = SubResource( 13 )
 
 [node name="border_left" type="Sprite" parent="."]
 position = Vector2( 32, 64 )
@@ -63,7 +79,7 @@ region_rect = Rect2( 2, 37, 32, 32 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="border_left/StaticBody2D"]
 position = Vector2( -4, 0 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="border_top" type="Sprite" parent="."]
 position = Vector2( 96, 64 )
@@ -75,7 +91,7 @@ region_rect = Rect2( 36, 37, 32, 32 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="border_top/StaticBody2D"]
 position = Vector2( 0, -4 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="border_bottom" type="Sprite" parent="."]
 position = Vector2( 160, 64 )
@@ -87,8 +103,8 @@ region_rect = Rect2( 104, 37, 32, 32 )
 [node name="StaticBody2D" type="StaticBody2D" parent="border_bottom"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="border_bottom/StaticBody2D"]
-position = Vector2( 0, 8 )
-shape = SubResource( 3 )
+position = Vector2( 0, 4 )
+shape = SubResource( 4 )
 
 [node name="border_right" type="Sprite" parent="."]
 position = Vector2( 224, 64 )
@@ -100,7 +116,7 @@ region_rect = Rect2( 70, 37, 32, 32 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="border_right/StaticBody2D"]
 position = Vector2( 4, 0 )
-shape = SubResource( 4 )
+shape = SubResource( 5 )
 
 [node name="corner_lt" type="Sprite" parent="."]
 position = Vector2( 32, 128 )
@@ -126,6 +142,7 @@ polygon = PoolVector2Array( -16, -16, 16, -16, 16, 16, -8, 16, -8, 8, -16, 8 )
 
 [node name="corner_rb" type="Sprite" parent="."]
 position = Vector2( 160, 128 )
+z_index = 2
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 70, 71, 32, 32 )
@@ -133,10 +150,12 @@ region_rect = Rect2( 70, 71, 32, 32 )
 [node name="StaticBody2D" type="StaticBody2D" parent="corner_rb"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="corner_rb/StaticBody2D"]
+z_index = 2
 polygon = PoolVector2Array( -8, -16, 16, -16, 16, 16, -16, 16, -16, -8, -8, -8 )
 
 [node name="corner_bl" type="Sprite" parent="."]
 position = Vector2( 224, 128 )
+z_index = 2
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 104, 71, 32, 31 )
@@ -144,7 +163,7 @@ region_rect = Rect2( 104, 71, 32, 31 )
 [node name="StaticBody2D" type="StaticBody2D" parent="corner_bl"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="corner_bl/StaticBody2D"]
-polygon = PoolVector2Array( -16, -16, 8, -16, 8, -8, 16, -8, 16, 16, -16, 16 )
+polygon = PoolVector2Array( -16, -16, 8, -16, 8, -7, 16, -7, 16, 16, -16, 16 )
 
 [node name="wall_vert" type="Sprite" parent="."]
 position = Vector2( 32, 192 )
@@ -157,7 +176,7 @@ region_rect = Rect2( 2, 105, 32, 32 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="wall_vert/StaticBody2D"]
 position = Vector2( -1, 0 )
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 
 [node name="wall_horiz" type="Sprite" parent="."]
 position = Vector2( 96, 192 )
@@ -170,7 +189,7 @@ region_rect = Rect2( 36, 105, 32, 32 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="wall_horiz/StaticBody2D"]
 position = Vector2( 0, -1 )
-shape = SubResource( 6 )
+shape = SubResource( 7 )
 
 [node name="wall_topend" type="Sprite" parent="."]
 position = Vector2( 160, 192 )
@@ -182,8 +201,8 @@ region_rect = Rect2( 70, 105, 32, 32 )
 [node name="StaticBody2D" type="StaticBody2D" parent="wall_topend"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="wall_topend/StaticBody2D"]
-position = Vector2( 0, 3 )
-shape = SubResource( 7 )
+position = Vector2( -1, 3 )
+shape = SubResource( 8 )
 
 [node name="wall_rightend" type="Sprite" parent="."]
 position = Vector2( 224, 192 )
@@ -195,8 +214,8 @@ region_rect = Rect2( 104, 105, 32, 32 )
 [node name="StaticBody2D" type="StaticBody2D" parent="wall_rightend"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="wall_rightend/StaticBody2D"]
-position = Vector2( -3, 0 )
-shape = SubResource( 8 )
+position = Vector2( -3, -1 )
+shape = SubResource( 9 )
 
 [node name="wall_botend" type="Sprite" parent="."]
 position = Vector2( 288, 192 )
@@ -208,8 +227,8 @@ region_rect = Rect2( 138, 105, 32, 32 )
 [node name="StaticBody2D" type="StaticBody2D" parent="wall_botend"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="wall_botend/StaticBody2D"]
-position = Vector2( 0, -3 )
-shape = SubResource( 9 )
+position = Vector2( -1, -3 )
+shape = SubResource( 10 )
 
 [node name="wall_leftend" type="Sprite" parent="."]
 position = Vector2( 352, 192 )
@@ -221,8 +240,8 @@ region_rect = Rect2( 172, 105, 32, 32 )
 [node name="StaticBody2D" type="StaticBody2D" parent="wall_leftend"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="wall_leftend/StaticBody2D"]
-position = Vector2( 2, 0 )
-shape = SubResource( 10 )
+position = Vector2( 3, -1 )
+shape = SubResource( 11 )
 
 [node name="wall_cor_tr" type="Sprite" parent="."]
 position = Vector2( 32, 256 )
@@ -246,7 +265,7 @@ region_rect = Rect2( 36, 139, 32, 32 )
 [node name="StaticBody2D" type="StaticBody2D" parent="wall_cor_td"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="wall_cor_td/StaticBody2D"]
-polygon = PoolVector2Array( -16, -9, 7, -9, 7, 16, -9, 16, -9, 9, -16, 9 )
+polygon = PoolVector2Array( -16, -9, 7, -9, 7, 16, -9, 16, -9, 7, -16, 7 )
 
 [node name="wall_cor_bl" type="Sprite" parent="."]
 position = Vector2( 160, 256 )
@@ -270,4 +289,4 @@ region_rect = Rect2( 104, 139, 32, 32 )
 [node name="StaticBody2D" type="StaticBody2D" parent="wall_cor_bt"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="wall_cor_bt/StaticBody2D"]
-polygon = PoolVector2Array( -9, -16, 7, -16, 7, -7, 16, -7, 16, 7, -9, 7 )
+polygon = PoolVector2Array( -9, -16, 7, -16, 7, -9, 16, -9, 16, 7, -9, 7 )
