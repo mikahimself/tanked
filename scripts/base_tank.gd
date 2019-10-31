@@ -8,6 +8,7 @@ var reverse_mult = 0.6
 var velocity = Vector2(0,0)
 var cooldown = 0.5
 
+
 var bullet = load("res://scenes/bullet.tscn")
 
 var can_shoot = true
@@ -19,6 +20,14 @@ onready var shot_timer = $shot_timer
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	shot_timer.wait_time = cooldown
+
+
+	
+func _draw():
+	draw_line(Vector2(0,0), Vector2(speed_fwd * 60, 0), Color(255,0,0), 3)
+	#draw_line(Vector2(0,0), target_dir * 30, Color(0,255,0), 3)
+	#draw_line(Vector2(0,0), right_long_radar.position, Color(0,0,255), 2)
+
 
 func get_controls():
 	rot_dir = 0
@@ -43,6 +52,7 @@ func get_controls():
 
 func _process(delta):
 	offset_shadow()
+	update()
 
 func offset_shadow():
 	shadow.position = Vector2(4,4).rotated(-rotation)
