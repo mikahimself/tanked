@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+export (bool) var debug = false
 var speed_fwd = 0.75
 var speed_rev = 0.45
 var rot_speed = 1.5
@@ -24,10 +25,8 @@ func _ready():
 
 	
 func _draw():
-	draw_line(Vector2(0,0), Vector2(speed_fwd * 60, 0), Color(255,0,0), 3)
-	#draw_line(Vector2(0,0), target_dir * 30, Color(0,255,0), 3)
-	#draw_line(Vector2(0,0), right_long_radar.position, Color(0,0,255), 2)
-
+	if debug:
+		draw_line(Vector2(0,0), Vector2(speed_fwd * 60, 0), Color(255,0,0), 3)
 
 func get_controls():
 	rot_dir = 0
@@ -47,7 +46,6 @@ func get_controls():
 		b_cont.add_child(b)
 		shot_timer.start()
 		b.start(global_position + Vector2(30,0).rotated(rotation), Vector2(1, 0).rotated(rotation))
-		
 
 
 func _process(delta):
@@ -57,11 +55,14 @@ func _process(delta):
 func offset_shadow():
 	shadow.position = Vector2(4,4).rotated(-rotation)
 	
+func set_my_rotation(delta):
+	rotation += rot_dir * rot_speed * delta
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	get_controls()
-	rotation += rot_dir * rot_speed * delta
+	set_my_rotation(delta)
+	
 	move_and_collide(velocity)
 	
 

@@ -16,21 +16,23 @@ editor/display_folded = true
 [node name="TileMap2" parent="level_container" instance=ExtResource( 2 )]
 
 [node name="player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 137.997, 185.205 )
+position = Vector2( 58.2186, 348.086 )
 rotation = 4.71239
 z_index = 1
 
 [node name="bullet_container" type="Node" parent="."]
 
 [node name="cpu" parent="." instance=ExtResource( 4 )]
-position = Vector2( 589.728, 357.572 )
-rotation = 4.71239
+position = Vector2( 712.036, 45.5554 )
+rotation = 3.14159
 
 [node name="nav" type="Navigation2D" parent="."]
-editor/display_folded = true
 
 [node name="level1" parent="nav" instance=ExtResource( 5 )]
 
 [node name="path" type="Sprite" parent="."]
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 6 )
+
+[node name="Timer" type="Timer" parent="."]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
