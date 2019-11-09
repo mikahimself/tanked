@@ -1,12 +1,4 @@
-extends KinematicBody2D
-
-export var debug = false
-
-# Generic tank parameters
-export (float) var speed = 1
-export (int) var rot_dir = 0
-var rot_speed = 1.5
-var engine_power = 40
+extends "res://scripts/base_tank.gd"
 
 # CPU Navigation
 var path = []
@@ -55,9 +47,7 @@ func _draw():
 
 func get_controls():
 	rot_dir = 0
-	speed = 0.75
 	
-
 	if (path.size() > 1):
 		# what's the distance to the next waypoint
 		var d = position.distance_to(path[0])
@@ -75,12 +65,12 @@ func get_controls():
 			rot_dir = 1
 		
 		if (abs(angle_between)) < 10:
-			speed = 1
+			velocity = Vector2(speed_fwd, 0).rotated(rotation)
 			rot_dir = 0
 		elif (abs(angle_between)) > 60 and (abs(angle_between) < 120):
-			speed = 0.1
+			velocity = Vector2(speed_fwd * 1, 0).rotated(rotation)
 		elif (abs(angle_between)) >= 120:
-			speed = -1
+			velocity = Vector2(speed_rev, 0).rotated(rotation)
 			rot_dir = 0
 
 		if d > seek_distance:
@@ -108,19 +98,12 @@ func set_shot_direction():
 				if (abs(angle_between)) < 5:
 					print("shoot")
 					rot_dir = 0
-					speed = 0
+					velocity = Vector2(speed_fwd * 0.1, 0).rotated(rotation)
 				
-	
-	
 	
 func fire_cannon():
 	pass
 
-func set_my_rotation(delta):
-	rotation += rot_dir * rot_speed * delta
-
 func _physics_process(delta):
-	get_controls()
-	set_shot_direction()
-	set_my_rotation(delta)
-	move_and_collide(Vector2(speed * engine_power, 0).rotated(rotation) *  delta)
+	move_and_collide(Vector2(speed_fwd * 5, 0).rotated(rotation) *  delta)
+#	set_shot_direction()

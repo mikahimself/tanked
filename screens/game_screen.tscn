@@ -2,10 +2,10 @@
 
 [ext_resource path="res://screens/game_screen.gd" type="Script" id=1]
 [ext_resource path="res://levels/level_base.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/base_tank.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/cpu_tank.tscn" type="PackedScene" id=4]
-[ext_resource path="res://levels/level_1.tscn" type="PackedScene" id=5]
-[ext_resource path="res://icon.png" type="Texture" id=6]
+[ext_resource path="res://scenes/cpu_tank.tscn" type="PackedScene" id=3]
+[ext_resource path="res://levels/level_1.tscn" type="PackedScene" id=4]
+[ext_resource path="res://icon.png" type="Texture" id=5]
+[ext_resource path="res://scenes/player_tank.tscn" type="PackedScene" id=6]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
@@ -15,24 +15,22 @@ editor/display_folded = true
 
 [node name="TileMap2" parent="level_container" instance=ExtResource( 2 )]
 
-[node name="player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 58.2186, 348.086 )
-rotation = 4.71239
-z_index = 1
-
 [node name="bullet_container" type="Node" parent="."]
 
-[node name="cpu" parent="." instance=ExtResource( 4 )]
+[node name="cpu" parent="." instance=ExtResource( 3 )]
 position = Vector2( 712.036, 45.5554 )
 rotation = 3.14159
 
 [node name="nav" type="Navigation2D" parent="."]
 
-[node name="level1" parent="nav" instance=ExtResource( 5 )]
+[node name="level1" parent="nav" instance=ExtResource( 4 )]
 
 [node name="path" type="Sprite" parent="."]
 scale = Vector2( 0.1, 0.1 )
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="player" parent="." instance=ExtResource( 6 )]
+position = Vector2( 69.8061, 236.011 )
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
