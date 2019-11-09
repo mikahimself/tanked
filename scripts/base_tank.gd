@@ -1,8 +1,8 @@
 extends KinematicBody2D
 
 # Adjustable values
-export (float) var speed_fwd = 0.75
-export (float) var speed_rev = -0.45
+export (float) var speed_fwd = 50
+export (float) var speed_rev = -30
 export (float) var rot_speed = 1.5
 export (float) var gun_cooldown_period = 0.5
 
@@ -53,7 +53,10 @@ func set_my_rotation(delta):
 func _physics_process(delta):
 	get_controls()
 	set_my_rotation(delta)
-	move_and_collide(velocity)
+	if velocity != Vector2(0,0):
+		var collision = move_and_collide(velocity * delta)
+		if collision:
+    		velocity = velocity.slide(collision.normal)
 	
 
 

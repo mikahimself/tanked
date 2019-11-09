@@ -8,6 +8,12 @@ var forward_dir = Vector2()
 var target_dir = Vector2()
 var shot_dir = Vector2()
 
+export (float) var reaction_distance = 150
+export (float) var min_dist_to_player = 50
+export (float) var spd_mult_slow = 0.15
+export (float) var spd_mult_medium = 0.5
+export (float) var spd_mult_fast = 0.75
+
 onready var shot_ray = $gun_ray
 
 # CPU parametes
@@ -47,9 +53,12 @@ func _draw():
 
 func get_controls():
 	rot_dir = 0
+
+	var distance_to_player = position.distance_to(goal)
 	
-	if (path.size() > 1):
-		# what's the distance to the next waypoint
+	#if (path.size() >= 3):
+	if (distance_to_player >= min_dist_to_player):
+		# Distance to the next waypoint and player
 		var d = position.distance_to(path[0])
 		
 		# Forward direction is in relation to object's orientation
@@ -57,26 +66,29 @@ func get_controls():
 		# Target dir seems to come through negative rotation
 		target_dir = position.direction_to(path[0]).rotated(-rotation)
 
+		# Angle between target dir and current dir
 		var angle_between = forward_dir.angle_to(target_dir) * (180/PI)
 
-		if (angle_between) < 0:
+		# Choose where to turn
+		if (angle_between) < -5:
 			rot_dir = -1
-		if (angle_between) >= 0:
+		elif (angle_between) >= 5:
 			rot_dir = 1
 		
-		if (abs(angle_between)) < 10:
-			velocity = Vector2(speed_fwd, 0).rotated(rotation)
-			rot_dir = 0
-		elif (abs(angle_between)) > 60 and (abs(angle_between) < 120):
-			velocity = Vector2(speed_fwd * 1, 0).rotated(rotation)
-		elif (abs(angle_between)) >= 120:
-			velocity = Vector2(speed_rev, 0).rotated(rotation)
-			rot_dir = 0
+		# Set speed
+		velocity = Vector2(speed_fwd, 0).rotated(rotation)
+		
+		if (abs(angle_between)) > 60 and (abs(angle_between) < 120):
+			velocity = Vector2(speed_fwd, 0).rotated(rotation) * spd_mult_slow
+		
+		if (distance_to_player < reaction_distance):
+			velocity = Vector2(speed_fwd, 0).rotated(rotation) * spd_mult_fast
 
-		if d > seek_distance:
-			pass
-		else:
+		# Jump to next waypoint if close enough to current
+		if d < seek_distance:
 			path.remove(0)
+	else:
+		velocity = Vector2(0, 0)
 
 func set_shot_direction():
 	var d = position.distance_to(goal)
@@ -87,7 +99,8 @@ func set_shot_direction():
 		if shot_ray.is_colliding():
 			var body = shot_ray.get_collider()
 			if body.is_in_group("wall"):
-				print("can't see shit")
+				pass
+				#print("can't see shit")
 			else:
 				var angle_between = fd.angle_to(shot_dir) * (180/PI)
 				if (angle_between) < 0:
@@ -96,7 +109,7 @@ func set_shot_direction():
 					rot_dir = 1
 				
 				if (abs(angle_between)) < 5:
-					print("shoot")
+				#	print("shoot")
 					rot_dir = 0
 					velocity = Vector2(speed_fwd * 0.1, 0).rotated(rotation)
 				
@@ -105,5 +118,4 @@ func fire_cannon():
 	pass
 
 func _physics_process(delta):
-	move_and_collide(Vector2(speed_fwd * 5, 0).rotated(rotation) *  delta)
-#	set_shot_direction()
+	set_shot_direction()
