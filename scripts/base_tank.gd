@@ -58,7 +58,5 @@ func _physics_process(delta):
 		if collision:
     		velocity = velocity.slide(collision.normal)
 	
-
-
 func _on_shot_timer_timeout():
 	can_shoot = true

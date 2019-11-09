@@ -1,14 +1,14 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://screens/game_screen.gd" type="Script" id=1]
+[ext_resource path="res://scripts/game_screen.gd" type="Script" id=1]
 [ext_resource path="res://levels/level_base.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/cpu_tank.tscn" type="PackedScene" id=3]
 [ext_resource path="res://levels/level_1.tscn" type="PackedScene" id=4]
-[ext_resource path="res://icon.png" type="Texture" id=5]
-[ext_resource path="res://scenes/player_tank.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/player_tank.tscn" type="PackedScene" id=5]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
+debug = true
 
 [node name="level_container" type="Node" parent="."]
 
@@ -20,19 +20,16 @@ script = ExtResource( 1 )
 position = Vector2( 712.036, 45.5554 )
 rotation = 3.14159
 debug = false
-min_dist_to_player = 25.0
 
 [node name="nav" type="Navigation2D" parent="."]
 
 [node name="level1" parent="nav" instance=ExtResource( 4 )]
 
-[node name="path" type="Sprite" parent="."]
-scale = Vector2( 0.1, 0.1 )
-texture = ExtResource( 5 )
-
-[node name="Timer" type="Timer" parent="."]
+[node name="path_update_timer" type="Timer" parent="."]
 wait_time = 0.75
 
-[node name="player" parent="." instance=ExtResource( 6 )]
+[node name="player" parent="." instance=ExtResource( 5 )]
 position = Vector2( 69.8061, 236.011 )
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+
+[node name="target_container" type="Node2D" parent="."]
+[connection signal="timeout" from="path_update_timer" to="." method="_on_Timer_timeout"]

@@ -10,9 +10,11 @@ var shot_dir = Vector2()
 
 export (float) var reaction_distance = 150
 export (float) var min_dist_to_player = 50
-export (float) var spd_mult_slow = 0.15
+export (float) var spd_mult_slow = 0.05
 export (float) var spd_mult_medium = 0.5
 export (float) var spd_mult_fast = 0.75
+export (int) var min_turn_angle = 45
+export (int) var max_turn_angle = 65
 
 onready var shot_ray = $gun_ray
 
@@ -70,19 +72,22 @@ func get_controls():
 		var angle_between = forward_dir.angle_to(target_dir) * (180/PI)
 
 		# Choose where to turn
-		if (angle_between) < -5:
+		if angle_between < -5:
 			rot_dir = -1
-		elif (angle_between) >= 5:
+		elif angle_between >= 5:
 			rot_dir = 1
 		
 		# Set speed
 		velocity = Vector2(speed_fwd, 0).rotated(rotation)
 		
-		if (abs(angle_between)) > 60 and (abs(angle_between) < 120):
+		if abs(angle_between) > min_turn_angle and abs(angle_between) <= max_turn_angle:
 			velocity = Vector2(speed_fwd, 0).rotated(rotation) * spd_mult_slow
-		
-		if (distance_to_player < reaction_distance):
-			velocity = Vector2(speed_fwd, 0).rotated(rotation) * spd_mult_fast
+		elif abs(angle_between) > max_turn_angle:
+			velocity = Vector2(speed_rev, 0).rotated(rotation)
+
+		# Slow down when player is close
+		if distance_to_player < reaction_distance:
+			velocity = velocity * spd_mult_fast
 
 		# Jump to next waypoint if close enough to current
 		if d < seek_distance:
