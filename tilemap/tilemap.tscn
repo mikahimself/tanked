@@ -105,7 +105,7 @@ shape = SubResource( 5 )
 
 [node name="border_bottom" type="Sprite" parent="."]
 position = Vector2( 160, 64 )
-z_index = 2
+z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 104, 37, 32, 32 )
@@ -118,6 +118,7 @@ shape = SubResource( 6 )
 
 [node name="border_right" type="Sprite" parent="."]
 position = Vector2( 224, 64 )
+z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 70, 37, 32, 32 )

@@ -166,7 +166,7 @@ points = PoolVector2Array( 16, 16, -16, 16, 8, -7, 16, -7 )
 "shape": SubResource( 6 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 16, 20 )
 } ]
-4/z_index = 2
+4/z_index = 10
 5/name = "border_right"
 5/texture = ExtResource( 1 )
 5/tex_offset = Vector2( 0, 0 )
@@ -182,7 +182,7 @@ points = PoolVector2Array( 16, 16, -16, 16, 8, -7, 16, -7 )
 "shape": SubResource( 7 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 20, 16 )
 } ]
-5/z_index = 0
+5/z_index = 10
 6/name = "corner_lt"
 6/texture = ExtResource( 1 )
 6/tex_offset = Vector2( 0, 0 )
