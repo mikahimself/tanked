@@ -13,6 +13,7 @@ debug = true
 [node name="level_container" type="Node" parent="."]
 
 [node name="TileMap2" parent="level_container" instance=ExtResource( 2 )]
+position = Vector2( 0, 8 )
 
 [node name="bullet_container" type="Node" parent="."]
 
@@ -24,6 +25,7 @@ debug = false
 [node name="nav" type="Navigation2D" parent="."]
 
 [node name="level1" parent="nav" instance=ExtResource( 4 )]
+position = Vector2( 0, 8 )
 
 [node name="path_update_timer" type="Timer" parent="."]
 wait_time = 0.75

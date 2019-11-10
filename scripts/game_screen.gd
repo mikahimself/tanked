@@ -23,10 +23,6 @@ func set_enemy():
 	cpu.goal = player.position
 	cpu.nav = nav
 
-func _process(delta):
-	pass
-	#path.position = cpu.path[0]
-
 func _on_Timer_timeout():
 	var pos = player.position
 	cpu.set_goal(pos)

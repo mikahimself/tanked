@@ -8,7 +8,7 @@ script = ExtResource( 2 )
 debug = true
 
 [node name="tank" parent="." index="2"]
-modulate = Color( 0.701961, 0.188235, 0.188235, 1 )
+modulate = Color( 0.0588235, 0.521569, 0.129412, 1 )
 
 [node name="gun_ray" type="RayCast2D" parent="." index="5"]
 position = Vector2( 20, 0 )

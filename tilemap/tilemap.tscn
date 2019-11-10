@@ -169,7 +169,7 @@ position = Vector2( 224, 128 )
 z_index = 2
 texture = ExtResource( 1 )
 region_enabled = true
-region_rect = Rect2( 104, 71, 32, 31 )
+region_rect = Rect2( 104, 71, 32, 32 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="corner_bl"]
 
@@ -260,6 +260,9 @@ z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 2, 139, 32, 32 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="StaticBody2D" type="StaticBody2D" parent="wall_cor_tr"]
 
@@ -301,3 +304,43 @@ region_rect = Rect2( 104, 139, 32, 32 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="wall_cor_bt/StaticBody2D"]
 polygon = PoolVector2Array( -9, -16, 7, -16, 7, -9, 16, -9, 16, 7, -9, 7 )
+
+[node name="wall_border_left" type="Sprite" parent="."]
+position = Vector2( 33, 321 )
+z_index = 10
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 2, 173, 32, 32 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="wall_border_right" type="Sprite" parent="."]
+position = Vector2( 96, 320 )
+z_index = 10
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 36, 173, 32, 32 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="wall_border_bottom" type="Sprite" parent="."]
+position = Vector2( 160, 320 )
+z_index = 10
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 70, 173, 32, 32 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="wall_border_top" type="Sprite" parent="."]
+position = Vector2( 224, 321 )
+z_index = 10
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 104, 173, 32, 32 )
+__meta__ = {
+"_edit_group_": true
+}

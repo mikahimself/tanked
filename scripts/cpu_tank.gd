@@ -67,7 +67,7 @@ func get_controls():
 		forward_dir = Vector2.RIGHT
 		# Target dir seems to come through negative rotation
 		target_dir = position.direction_to(path[0]).rotated(-rotation)
-
+		
 		# Angle between target dir and current dir
 		var angle_between = forward_dir.angle_to(target_dir) * (180/PI)
 
