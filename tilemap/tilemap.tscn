@@ -177,7 +177,7 @@ polygon = PoolVector2Array( -16, -16, 8, -16, 8, -7, 16, -7, 16, 16, -16, 16 )
 
 [node name="wall_vert" type="Sprite" parent="."]
 position = Vector2( 32, 192 )
-z_index = 2
+z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 2, 105, 32, 32 )
@@ -190,7 +190,7 @@ shape = SubResource( 8 )
 
 [node name="wall_horiz" type="Sprite" parent="."]
 position = Vector2( 96, 192 )
-z_index = 3
+z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 36, 105, 32, 32 )
@@ -203,7 +203,7 @@ shape = SubResource( 9 )
 
 [node name="wall_topend" type="Sprite" parent="."]
 position = Vector2( 160, 192 )
-z_index = 3
+z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 70, 105, 32, 32 )
@@ -216,7 +216,7 @@ shape = SubResource( 10 )
 
 [node name="wall_rightend" type="Sprite" parent="."]
 position = Vector2( 224, 192 )
-z_index = 3
+z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 104, 105, 32, 32 )
@@ -229,7 +229,7 @@ shape = SubResource( 11 )
 
 [node name="wall_botend" type="Sprite" parent="."]
 position = Vector2( 288, 192 )
-z_index = 3
+z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 138, 105, 32, 32 )
@@ -242,7 +242,7 @@ shape = SubResource( 12 )
 
 [node name="wall_leftend" type="Sprite" parent="."]
 position = Vector2( 352, 192 )
-z_index = 3
+z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 172, 105, 32, 32 )
@@ -255,7 +255,7 @@ shape = SubResource( 13 )
 
 [node name="wall_cor_tr" type="Sprite" parent="."]
 position = Vector2( 32, 256 )
-z_index = 3
+z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 2, 139, 32, 32 )
@@ -267,7 +267,7 @@ polygon = PoolVector2Array( -9, -9, 16, -9, 16, 7, 7, 7, 7, 16, -9, 16 )
 
 [node name="wall_cor_td" type="Sprite" parent="."]
 position = Vector2( 96, 256 )
-z_index = 3
+z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 36, 139, 32, 32 )
@@ -279,7 +279,7 @@ polygon = PoolVector2Array( -16, -9, 7, -9, 7, 16, -9, 16, -9, 7, -16, 7 )
 
 [node name="wall_cor_bl" type="Sprite" parent="."]
 position = Vector2( 160, 256 )
-z_index = 3
+z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 70, 139, 32, 32 )
@@ -291,7 +291,7 @@ polygon = PoolVector2Array( -16, -9, -9, -9, -9, -16, 7, -16, 7, -3, 7, 7, -16, 
 
 [node name="wall_cor_bt" type="Sprite" parent="."]
 position = Vector2( 224, 256 )
-z_index = 3
+z_index = 10
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 104, 139, 32, 32 )
