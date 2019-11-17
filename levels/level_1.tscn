@@ -5,7 +5,6 @@
 [node name="TileMap" type="TileMap" groups=[
 "wall",
 ]]
-z_index = -2
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 32, 32 )
 format = 1
