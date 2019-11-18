@@ -25,7 +25,7 @@ position = Vector2( 0, 8 )
 [node name="bullet_container" type="Node" parent="."]
 
 [node name="cpu" parent="." instance=ExtResource( 3 )]
-position = Vector2( 712.036, 45.5554 )
+position = Vector2( 700, 55 )
 rotation = 3.14159
 debug = false
 
@@ -50,6 +50,7 @@ wait_time = 2.0
 autostart = true
 
 [node name="Shader" type="Control" parent="."]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 

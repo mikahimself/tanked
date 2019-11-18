@@ -11,6 +11,34 @@ debug = true
 modulate = Color( 0.0588235, 0.521569, 0.129412, 1 )
 
 [node name="gun_ray" type="RayCast2D" parent="." index="5"]
+visible = false
 position = Vector2( 20, 0 )
 enabled = true
 cast_to = Vector2( 250, 0 )
+
+[node name="raycast_container" type="Node2D" parent="." index="6"]
+
+[node name="RayCast2D_RF" type="RayCast2D" parent="raycast_container" index="0"]
+enabled = true
+cast_to = Vector2( 50, 50 )
+
+[node name="RayCast2D_RS" type="RayCast2D" parent="raycast_container" index="1"]
+
+[node name="RayCast2D_RB" type="RayCast2D" parent="raycast_container" index="2"]
+cast_to = Vector2( -50, 50 )
+
+[node name="RayCast2D_LF" type="RayCast2D" parent="raycast_container" index="3"]
+enabled = true
+cast_to = Vector2( 50, -50 )
+
+[node name="RayCast2D_LS" type="RayCast2D" parent="raycast_container" index="4"]
+cast_to = Vector2( 0, -50 )
+
+[node name="RayCast2D_LB" type="RayCast2D" parent="raycast_container" index="5"]
+cast_to = Vector2( -50, -50 )
+
+[node name="RayCast2D_FF" type="RayCast2D" parent="raycast_container" index="6"]
+cast_to = Vector2( 70, 0 )
+
+[node name="RayCast2D_BB" type="RayCast2D" parent="raycast_container" index="7"]
+cast_to = Vector2( -70, 0 )
