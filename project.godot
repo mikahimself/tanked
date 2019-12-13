@@ -59,6 +59,14 @@ shoot={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="vehicles"
+2d_physics/layer_2="walls"
+2d_physics/layer_3="mines"
+2d_physics/layer_4="collectibles"
+2d_physics/layer_5="bullets"
+
 [rendering]
 
 quality/driver/driver_name="GLES2"

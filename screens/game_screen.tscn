@@ -28,12 +28,17 @@ position = Vector2( 0, 8 )
 position = Vector2( 700, 55 )
 rotation = 3.14159
 debug = false
+min_dist_to_wall = 45.0
+min_dist_to_wall_front = 35.0
+min_dist_to_wall_back = 50.0
+max_turn_angle = 75
 
 [node name="nav" type="Navigation2D" parent="."]
 
 [node name="level1" parent="nav" instance=ExtResource( 4 )]
 position = Vector2( 0, 8 )
 z_as_relative = false
+collision_layer = 2
 
 [node name="path_update_timer" type="Timer" parent="."]
 wait_time = 0.75

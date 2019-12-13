@@ -7,6 +7,7 @@ var goal: Vector2 = Vector2() setget set_goal
 var forward_dir: Vector2 = Vector2()
 var target_dir: Vector2 = Vector2()
 var shot_dir: Vector2 = Vector2()
+var target_set: bool = false
 
 var can_go_left: bool = true
 var can_go_right: bool = true
@@ -33,6 +34,8 @@ onready var ray_l_front: RayCast2D = get_node("raycast_container/RayCast2D_LF")
 onready var ray_l_side: RayCast2D = get_node("raycast_container/RayCast2D_LS")
 onready var ray_forward: RayCast2D = get_node("raycast_container/RayCast2D_FF")
 onready var ray_backward: RayCast2D = get_node("raycast_container/RayCast2D_BB")
+
+var raycast_len: float = 70
 
 # CPU parametes
 export (int) var seek_distance = 20
@@ -88,7 +91,8 @@ func get_controls():
 		# Angle between target dir and current dir
 		var angle_between = forward_dir.angle_to(target_dir) * (180/PI)
 
-		print(angle_between, " L: ", can_go_left, " R: ", can_go_right, " B: ", can_go_backward, " F: ", can_go_forward)
+		#print(angle_between, " L: ", can_go_left, " R: ", can_go_right, " B: ", can_go_backward, " F: ", can_go_forward)
+
 
 		# Turn left
 		if (angle_between < -5 and can_go_left) or !can_go_right:
@@ -97,23 +101,32 @@ func get_controls():
 		elif (angle_between >= 5 and can_go_right) or !can_go_left:
 			rot_dir = 1
 		
+
+
 		# Set speed
-		if can_go_forward or !can_go_backward:
+		if can_go_forward:
 			velocity = Vector2(speed_fwd, 0).rotated(rotation)
+		elif can_go_backward:
+			velocity = Vector2(speed_rev, 0).rotated(rotation)
 		else:
 			velocity = Vector2(0, 0)
 
-		if !can_go_forward and can_go_backward:
-			velocity = Vector2(speed_rev, 0).rotated(rotation)
+		#if !can_go_forward and can_go_backward:
+		#	velocity = Vector2(speed_rev, 0).rotated(rotation)
 		
 		if abs(angle_between) > min_turn_angle and abs(angle_between) <= max_turn_angle:
 			velocity = Vector2(speed_fwd, 0).rotated(rotation) * spd_mult_slow
 		elif abs(angle_between) > max_turn_angle:
-			velocity = Vector2(speed_rev, 0).rotated(rotation)
+			target_set = true
+			print("over the angle")
+			if can_go_backward:
+				velocity = Vector2(speed_rev, 0).rotated(rotation)
+			else:
+				velocity = Vector2(0, 0)
 
 		# Slow down when player is close
-		if distance_to_player < reaction_distance:
-			velocity = velocity * spd_mult_fast
+		#if distance_to_player < reaction_distance:
+		#	velocity = velocity * spd_mult_fast
 
 		# Jump to next waypoint if close enough to current
 		if d < seek_distance:
@@ -150,34 +163,65 @@ func fire_cannon():
 
 func check_available_movement():
 	# Assume we can move
-	can_go_right = true
-	can_go_left = true
+	can_go_right = false
+	can_go_left = false
 	can_go_forward = true
 	can_go_backward = true
 
+	var left_cumulative: float = 140
+	var right_cumulative: float = 140
+
 	if ray_l_front.is_colliding():
 		var dist_lf = position.distance_to(ray_l_front.get_collision_point())
-		if dist_lf < min_dist_to_wall:
+		left_cumulative -= raycast_len - dist_lf
+		if dist_lf < 15:
+			print("LF too small, going false: ", dist_lf)
 			can_go_left = false
-		if dist_lf < min_dist_to_wall_front:
-			can_go_forward = false
+
+	if ray_l_side.is_colliding():
+		var dist_ls = position.distance_to(ray_l_side.get_collision_point())
+		left_cumulative += raycast_len - dist_ls
+
+	if left_cumulative > min_dist_to_wall:
+		can_go_left = true
+	else:
+		print("cumulative too small, going false: ", left_cumulative)
+
 
 	if ray_r_front.is_colliding():
 		var dist_rf = position.distance_to(ray_r_front.get_collision_point())
-		if dist_rf < min_dist_to_wall:
+		right_cumulative += raycast_len - dist_rf
+		if dist_rf < 15:
 			can_go_right = false
-		if dist_rf < min_dist_to_wall_front:
-			can_go_forward = false
+
+	if ray_r_side.is_colliding():
+		var dist_rs = position.distance_to(ray_r_side.get_collision_point())
+		right_cumulative += raycast_len - dist_rs
+		
+	if right_cumulative > min_dist_to_wall:
+		can_go_right = true
+	#else:
+	#	can_go_forward = false
+	print("checkmov left: ", can_go_left, " right: ", can_go_right )
+
+	# Määritä parempi suunta katsomalla cumulativen koko.
 
 	if ray_forward.is_colliding():
 		var dist_ff = position.distance_to(ray_forward.get_collision_point())
-		if (dist_ff < min_dist_to_wall):
+		#print("frontdist: ", dist_ff)
+		if (dist_ff < min_dist_to_wall_front):
 			can_go_forward = false
+	#else:
+	#	can_go_forward = true		
 
 	if ray_backward.is_colliding():
 		var dist_bb = position.distance_to(ray_backward.get_collision_point())
+		#print("backdist: ", dist_bb)
 		if (dist_bb < min_dist_to_wall_back):
 			can_go_backward = false
+
+	# TODO: Check if moving to players line of fire.
+	# If so, calculate route behing player's back.
 
 func _physics_process(delta):
 	set_shot_direction()
