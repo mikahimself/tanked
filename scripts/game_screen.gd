@@ -14,14 +14,20 @@ onready var shader = get_node("Shader/ChromaticAberration")
 onready var rng = RandomNumberGenerator.new()
 
 var target = load("res://scenes/target.tscn")
+var level
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	setup_level()
 	set_enemy()
 	rng.randomize()
 	path_update_timer.wait_time = search_interval
 	path_update_timer.start()
+
+func setup_level():
+	
+	pass
 
 func set_enemy():
 	cpu.goal = player.position

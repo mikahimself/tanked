@@ -19,6 +19,10 @@ config/name="Tank"
 run/main_scene="res://screens/game_screen.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+game_data="*res://scripts/game_data.gd"
+
 [display]
 
 window/size/width=768

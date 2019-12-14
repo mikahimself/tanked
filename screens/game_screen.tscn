@@ -13,7 +13,7 @@ shader = ExtResource( 6 )
 shader_param/apply = true
 shader_param/amount = 0.0
 
-[node name="Node2D" type="Node2D"]
+[node name="GameScreen" type="Node2D"]
 script = ExtResource( 1 )
 debug = true
 
@@ -38,7 +38,6 @@ max_turn_angle = 75
 [node name="level1" parent="nav" instance=ExtResource( 4 )]
 position = Vector2( 0, 8 )
 z_as_relative = false
-collision_layer = 2
 
 [node name="path_update_timer" type="Timer" parent="."]
 wait_time = 0.75

@@ -7,12 +7,16 @@ func get_controls():
 
 	if Input.is_action_pressed("left"):
 		rot_dir = -1
-	elif Input.is_action_pressed("right"):
+		
+	if Input.is_action_pressed("right"):
 		rot_dir = 1
+		
 	if Input.is_action_pressed("forward"):
 		velocity = Vector2(speed_fwd, 0).rotated(rotation)
+		
 	if Input.is_action_pressed("back"):
 		velocity = Vector2(speed_rev, 0).rotated(rotation)
+	
 	if Input.is_action_pressed("shoot") and can_shoot:
 		can_shoot = false
 		var b = bullet.instance()
