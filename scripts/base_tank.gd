@@ -9,6 +9,8 @@ export (float) var gun_cooldown_period = 0.5
 # Rotation and velocity
 var rot_dir = 0
 var velocity = Vector2(0,0)
+var bullet_offset = Vector2(30, 0)
+var bullet_dir = Vector2(1, 0)
 
 # Booleans
 var can_shoot = true
@@ -23,6 +25,7 @@ onready var shot_timer = $shot_timer
 var bullet = load("res://scenes/bullet.tscn")
 onready var b_cont = get_node("../bullet_container")
 
+signal shot_bullet(bullet_position, bullet_direction)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -46,17 +49,20 @@ func _process(delta):
 func offset_shadow():
 	shadow.position = Vector2(4,4).rotated(-rotation)
 	
-func set_my_rotation(delta):
+func _apply_rotation(delta):
 	rotation += rot_dir * rot_speed * delta
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):
-	get_controls()
-	set_my_rotation(delta)
+func _apply_movement(delta):
 	if velocity != Vector2(0,0):
 		var collision = move_and_collide(velocity * delta)
 		if collision:
-    		velocity = velocity.slide(collision.normal)
+			velocity = velocity.slide(collision.normal)
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _physics_process(delta):
+	_apply_movement(delta)
+
+	
 	
 func _on_shot_timer_timeout():
 	can_shoot = true

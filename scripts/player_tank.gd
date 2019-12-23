@@ -19,7 +19,7 @@ func get_controls():
 	
 	if Input.is_action_pressed("shoot") and can_shoot:
 		can_shoot = false
-		var b = bullet.instance()
-		b_cont.add_child(b)
+		var bullet_pos = global_position + bullet_offset.rotated(rotation)
+		var bullet_dir_now = bullet_dir.rotated(rotation)
 		shot_timer.start()
-		b.start(global_position + Vector2(30,0).rotated(rotation), Vector2(1, 0).rotated(rotation))
+		emit_signal("shot_bullet", bullet_pos, bullet_dir_now)

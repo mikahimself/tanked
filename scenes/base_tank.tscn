@@ -7,9 +7,8 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 3 )
 
-[sub_resource type="CapsuleShape2D" id=2]
-radius = 16.0
-height = 2.0
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 13, 14 )
 
 [node name="base_tank" type="KinematicBody2D"]
 z_index = -2

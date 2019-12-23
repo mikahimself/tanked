@@ -14,8 +14,9 @@ onready var shader = get_node("Shader/ChromaticAberration")
 onready var rng = RandomNumberGenerator.new()
 
 var target = load("res://scenes/target.tscn")
-var level
+var bullet = load("res://scenes/bullet.tscn")
 
+onready var b_cont = get_node("bullet_container")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,6 +25,7 @@ func _ready():
 	rng.randomize()
 	path_update_timer.wait_time = search_interval
 	path_update_timer.start()
+	$player.connect("shot_bullet", self, "on_bullet_shot")
 
 func setup_level():
 	
@@ -71,6 +73,12 @@ func draw_tracks():
 			trgt.position = cpu.path[i]
 			target_container.add_child(trgt)
 
+# TODO: Flash Chroma when player is hit.
 func _on_chroma_update_timer_timeout():
 	if rng.randf_range(0,10) < 2:
 		is_chroma_on = true
+
+func on_bullet_shot(bullet_position, bullet_direction) -> void:
+	var b = bullet.instance()
+	b_cont.add_child(b)
+	b.start(bullet_position, bullet_direction)

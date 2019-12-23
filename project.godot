@@ -8,9 +8,14 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node",
+"class": "StateMachine",
+"language": "GDScript",
+"path": "res://scripts/state_machine.gd"
+} ]
 _global_script_class_icons={
-
+"StateMachine": ""
 }
 
 [application]
@@ -18,10 +23,6 @@ _global_script_class_icons={
 config/name="Tank"
 run/main_scene="res://screens/game_screen.tscn"
 config/icon="res://icon.png"
-
-[autoload]
-
-game_data="*res://scripts/game_data.gd"
 
 [display]
 

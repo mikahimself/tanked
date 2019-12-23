@@ -1,14 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/base_tank.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/cpu_tank.gd" type="Script" id=2]
+[ext_resource path="res://sprites/tank_cpu.png" type="Texture" id=3]
+[ext_resource path="res://scripts/cpu_fsm.gd" type="Script" id=4]
 
 [node name="base_tank" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 debug = true
 
 [node name="tank" parent="." index="2"]
-modulate = Color( 0.0588235, 0.521569, 0.129412, 1 )
+texture = ExtResource( 3 )
 
 [node name="gun_ray" type="RayCast2D" parent="." index="5"]
 position = Vector2( 20, 0 )
@@ -19,39 +21,58 @@ cast_to = Vector2( 250, 0 )
 
 [node name="RayCast2D_RF" type="RayCast2D" parent="raycast_container" index="0"]
 enabled = true
-cast_to = Vector2( 35, 60 )
+cast_to = Vector2( 57.5, 40 )
 collision_mask = 2
 
-[node name="RayCast2D_RS" type="RayCast2D" parent="raycast_container" index="1"]
+[node name="RayCast2D_RR" type="RayCast2D" parent="raycast_container" index="1"]
+position = Vector2( 10, 10 )
+enabled = true
+cast_to = Vector2( 0, 15 )
+collision_mask = 2
+
+[node name="RayCast2D_RS" type="RayCast2D" parent="raycast_container" index="2"]
 enabled = true
 cast_to = Vector2( 67, 20 )
 collision_mask = 2
 
-[node name="RayCast2D_RB" type="RayCast2D" parent="raycast_container" index="2"]
-cast_to = Vector2( -50, 50 )
+[node name="RayCast2D_RB" type="RayCast2D" parent="raycast_container" index="3"]
+position = Vector2( 0, 15 )
+enabled = true
+cast_to = Vector2( 25, 0 )
 collision_mask = 3
 
-[node name="RayCast2D_LF" type="RayCast2D" parent="raycast_container" index="3"]
+[node name="RayCast2D_LF" type="RayCast2D" parent="raycast_container" index="4"]
 enabled = true
-cast_to = Vector2( 35, -60 )
+cast_to = Vector2( 57.5, -45 )
 collision_mask = 2
 
-[node name="RayCast2D_LS" type="RayCast2D" parent="raycast_container" index="4"]
+[node name="RayCast2D_LS" type="RayCast2D" parent="raycast_container" index="5"]
 enabled = true
 cast_to = Vector2( 67, -25 )
 collision_mask = 2
 
-[node name="RayCast2D_LB" type="RayCast2D" parent="raycast_container" index="5"]
-cast_to = Vector2( -50, -50 )
+[node name="RayCast2D_LR" type="RayCast2D" parent="raycast_container" index="6"]
+position = Vector2( 10, -10 )
+enabled = true
+cast_to = Vector2( 0, -15 )
 collision_mask = 2
 
-[node name="RayCast2D_FF" type="RayCast2D" parent="raycast_container" index="6"]
+[node name="RayCast2D_LB" type="RayCast2D" parent="raycast_container" index="7"]
+position = Vector2( 0, -14 )
+enabled = true
+cast_to = Vector2( 25, 0 )
+collision_mask = 2
+
+[node name="RayCast2D_FF" type="RayCast2D" parent="raycast_container" index="8"]
 enabled = true
 cast_to = Vector2( 70, 0 )
 collision_mask = 2
 
-[node name="RayCast2D_BB" type="RayCast2D" parent="raycast_container" index="7"]
+[node name="RayCast2D_BB" type="RayCast2D" parent="raycast_container" index="9"]
 position = Vector2( 0, -1 )
 enabled = true
 cast_to = Vector2( -70, 0 )
 collision_mask = 2
+
+[node name="StateMachine" type="Node2D" parent="." index="7"]
+script = ExtResource( 4 )

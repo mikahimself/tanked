@@ -7,35 +7,15 @@ var goal: Vector2 = Vector2() setget set_goal
 var forward_dir: Vector2 = Vector2()
 var target_dir: Vector2 = Vector2()
 var shot_dir: Vector2 = Vector2()
-var target_set: bool = false
 
-var can_go_left: bool = true
-var can_go_right: bool = true
-var can_go_forward: bool = true
-var can_go_backward: bool = true
-export (float) var min_dist_to_wall = 25
-export (float) var min_dist_to_wall_front = 25
-export (float) var min_dist_to_wall_back = 75
-
-
-export (float) var reaction_distance = 150
-export (float) var min_dist_to_player = 50
-export (float) var spd_mult_slow = 0.05
-export (float) var spd_mult_medium = 0.5
-export (float) var spd_mult_fast = 0.75
-export (int) var min_turn_angle = 45
-export (int) var max_turn_angle = 65
+var no_turn_angle: int = 5
 
 # Raycasts
 onready var shot_ray: RayCast2D = $gun_ray
-onready var ray_r_front: RayCast2D = get_node("raycast_container/RayCast2D_RF")
-onready var ray_r_side: RayCast2D = get_node("raycast_container/RayCast2D_RS")
-onready var ray_l_front: RayCast2D = get_node("raycast_container/RayCast2D_LF")
-onready var ray_l_side: RayCast2D = get_node("raycast_container/RayCast2D_LS")
-onready var ray_forward: RayCast2D = get_node("raycast_container/RayCast2D_FF")
-onready var ray_backward: RayCast2D = get_node("raycast_container/RayCast2D_BB")
-
-var raycast_len: float = 70
+onready var ray_r_r: RayCast2D = get_node("raycast_container/RayCast2D_RR")
+onready var ray_l_r: RayCast2D = get_node("raycast_container/RayCast2D_LR")
+onready var ray_forward_short_r: RayCast2D = get_node("raycast_container/RayCast2D_RB")
+onready var ray_forward_short_l: RayCast2D = get_node("raycast_container/RayCast2D_LB")
 
 # CPU parametes
 export (int) var seek_distance = 20
@@ -72,67 +52,85 @@ func _draw():
 		draw_line(Vector2(0,0), target_dir * 50, Color(0,255,0), 3)
 		draw_line(Vector2(0,0), shot_dir * 175, Color(0,0,255), 3)
 
-func get_controls():
-	check_available_movement()
-	rot_dir = 0
 
-	var distance_to_player = position.distance_to(goal)
-	
-	#if (path.size() >= 3):
-	if (distance_to_player >= min_dist_to_player):
-		# Distance to the next waypoint and player
-		var d = position.distance_to(path[0])
-		
-		# Forward direction is in relation to object's orientation
-		forward_dir = Vector2.RIGHT
-		# Target dir seems to come through negative rotation
-		target_dir = position.direction_to(path[0]).rotated(-rotation)
-		
-		# Angle between target dir and current dir
-		var angle_between = forward_dir.angle_to(target_dir) * (180/PI)
-
-		#print(angle_between, " L: ", can_go_left, " R: ", can_go_right, " B: ", can_go_backward, " F: ", can_go_forward)
-
-
-		# Turn left
-		if (angle_between < -5 and can_go_left) or !can_go_right:
-			rot_dir = -1
-		# Turn right
-		elif (angle_between >= 5 and can_go_right) or !can_go_left:
-			rot_dir = 1
-		
-
-
-		# Set speed
-		if can_go_forward:
-			velocity = Vector2(speed_fwd, 0).rotated(rotation)
-		elif can_go_backward:
-			velocity = Vector2(speed_rev, 0).rotated(rotation)
+func is_target_in_front() -> bool:
+	if path.size() > 0:
+		var target_dir = position.direction_to(path[0]).rotated(-rotation)
+		var facing = target_dir.normalized().dot(Vector2.RIGHT)
+		if (facing > 0):
+			return true
 		else:
-			velocity = Vector2(0, 0)
+			return false
+	return true
 
-		#if !can_go_forward and can_go_backward:
-		#	velocity = Vector2(speed_rev, 0).rotated(rotation)
-		
-		if abs(angle_between) > min_turn_angle and abs(angle_between) <= max_turn_angle:
-			velocity = Vector2(speed_fwd, 0).rotated(rotation) * spd_mult_slow
-		elif abs(angle_between) > max_turn_angle:
-			target_set = true
-			print("over the angle")
-			if can_go_backward:
-				velocity = Vector2(speed_rev, 0).rotated(rotation)
-			else:
-				velocity = Vector2(0, 0)
+func is_target_directly_behind() -> bool:
+	if path.size() > 0:
+		var target_dir = position.direction_to(path[0]).rotated(-rotation)
+		var facing = target_dir.normalized().dot(Vector2.RIGHT)
+		if facing == 1:
+			return true
+		else:
+			return false
+	return false
 
-		# Slow down when player is close
-		#if distance_to_player < reaction_distance:
-		#	velocity = velocity * spd_mult_fast
 
-		# Jump to next waypoint if close enough to current
+func get_angle_to_target() -> float:
+	if path.size() > 0:
+		var target_dir = position.direction_to(path[0]).rotated(-rotation)
+		var angle_between = Vector2.RIGHT.angle_to(target_dir) * (180/PI)
+		return angle_between
+	else:
+		return 0.0
+
+func get_target_direction() -> int:
+	if path.size() > 0:
+		var target_dir = position.direction_to(path[0]).rotated(-rotation)
+		var angle_between = Vector2.RIGHT.angle_to(target_dir) * (180/PI)
+		if angle_between < -(no_turn_angle):
+			return -1 # left
+		elif angle_between > no_turn_angle:
+			return 1 # right
+		else:
+			return 0
+	else:
+		return 0
+
+func set_turn_direction(target, state, states):
+	if state != states.turn_while_idle:
+		match target:
+			-1:
+				if ray_forward_short_l.is_colliding():
+					rot_dir = 1
+				elif ray_l_r.is_colliding():
+					rot_dir = 0
+				else:
+					rot_dir = -1
+			1:
+				if ray_forward_short_r.is_colliding():
+					rot_dir = -1
+				elif ray_r_r.is_colliding():
+					rot_dir = 0
+				else:
+					rot_dir = 1
+			0:
+				rot_dir = 0
+	else:
+		rot_dir = target
+
+func set_movement_velocity(state, states):
+	match state:
+		states.drive_forward:
+			velocity = Vector2(speed_fwd, 0).rotated(rotation)
+		states.drive_backward:
+			velocity = Vector2(speed_rev, 0).rotated(rotation)
+		states.turn_while_idle:
+			velocity = Vector2.ZERO
+
+func check_distance_to_waypoint() -> void:
+	if path.size() > 0:
+		var d = position.distance_to(path[0])
 		if d < seek_distance:
 			path.remove(0)
-	else:
-		velocity = Vector2(0, 0)
 
 func set_shot_direction():
 	var d = position.distance_to(goal)
@@ -160,68 +158,3 @@ func set_shot_direction():
 	
 func fire_cannon():
 	pass
-
-func check_available_movement():
-	# Assume we can move
-	can_go_right = false
-	can_go_left = false
-	can_go_forward = true
-	can_go_backward = true
-
-	var left_cumulative: float = 140
-	var right_cumulative: float = 140
-
-	if ray_l_front.is_colliding():
-		var dist_lf = position.distance_to(ray_l_front.get_collision_point())
-		left_cumulative -= raycast_len - dist_lf
-		if dist_lf < 15:
-			print("LF too small, going false: ", dist_lf)
-			can_go_left = false
-
-	if ray_l_side.is_colliding():
-		var dist_ls = position.distance_to(ray_l_side.get_collision_point())
-		left_cumulative += raycast_len - dist_ls
-
-	if left_cumulative > min_dist_to_wall:
-		can_go_left = true
-	else:
-		print("cumulative too small, going false: ", left_cumulative)
-
-
-	if ray_r_front.is_colliding():
-		var dist_rf = position.distance_to(ray_r_front.get_collision_point())
-		right_cumulative += raycast_len - dist_rf
-		if dist_rf < 15:
-			can_go_right = false
-
-	if ray_r_side.is_colliding():
-		var dist_rs = position.distance_to(ray_r_side.get_collision_point())
-		right_cumulative += raycast_len - dist_rs
-		
-	if right_cumulative > min_dist_to_wall:
-		can_go_right = true
-	#else:
-	#	can_go_forward = false
-	print("checkmov left: ", can_go_left, " right: ", can_go_right )
-
-	# Määritä parempi suunta katsomalla cumulativen koko.
-
-	if ray_forward.is_colliding():
-		var dist_ff = position.distance_to(ray_forward.get_collision_point())
-		#print("frontdist: ", dist_ff)
-		if (dist_ff < min_dist_to_wall_front):
-			can_go_forward = false
-	#else:
-	#	can_go_forward = true		
-
-	if ray_backward.is_colliding():
-		var dist_bb = position.distance_to(ray_backward.get_collision_point())
-		#print("backdist: ", dist_bb)
-		if (dist_bb < min_dist_to_wall_back):
-			can_go_backward = false
-
-	# TODO: Check if moving to players line of fire.
-	# If so, calculate route behing player's back.
-
-func _physics_process(delta):
-	set_shot_direction()
