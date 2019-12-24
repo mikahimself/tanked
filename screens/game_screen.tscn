@@ -19,8 +19,8 @@ debug = true
 [node name="bullet_container" type="Node" parent="."]
 
 [node name="cpu" parent="." instance=ExtResource( 2 )]
-position = Vector2( 658.693, 53.9986 )
-rotation = 3.14159
+position = Vector2( 700, 65 )
+rotation = 1.5708
 debug = false
 
 [node name="nav" type="Navigation2D" parent="."]
@@ -33,7 +33,7 @@ z_as_relative = false
 wait_time = 0.75
 
 [node name="player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 69.8061, 236.011 )
+position = Vector2( 60, 375 )
 z_index = -2
 speed_fwd = 60.0
 

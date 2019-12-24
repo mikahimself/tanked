@@ -11,11 +11,11 @@ var shot_dir: Vector2 = Vector2()
 var no_turn_angle: int = 5
 
 # Raycasts
-onready var shot_ray: RayCast2D = $gun_ray
-onready var ray_r_r: RayCast2D = get_node("raycast_container/RayCast2D_RR")
-onready var ray_l_r: RayCast2D = get_node("raycast_container/RayCast2D_LR")
-onready var ray_forward_short_r: RayCast2D = get_node("raycast_container/RayCast2D_RB")
-onready var ray_forward_short_l: RayCast2D = get_node("raycast_container/RayCast2D_LB")
+onready var shot_ray: RayCast2D = get_node("raycast_container/Ray_Gun")
+onready var ray_right_side: RayCast2D = get_node("raycast_container/Ray_Right_Side")
+onready var ray_left_side: RayCast2D = get_node("raycast_container/Ray_Left_Side")
+onready var ray_right_front: RayCast2D = get_node("raycast_container/Ray_Right_Front")
+onready var ray_left_front: RayCast2D = get_node("raycast_container/Ray_Left_Front")
 
 # CPU parametes
 export (int) var seek_distance = 20
@@ -99,17 +99,13 @@ func set_turn_direction(target, state, states):
 	if state != states.turn_while_idle:
 		match target:
 			-1:
-				if ray_forward_short_l.is_colliding():
+				if ray_left_side.is_colliding() or ray_left_front.is_colliding():
 					rot_dir = 1
-				elif ray_l_r.is_colliding():
-					rot_dir = 0
 				else:
 					rot_dir = -1
 			1:
-				if ray_forward_short_r.is_colliding():
+				if ray_right_side.is_colliding() or ray_right_front.is_colliding():
 					rot_dir = -1
-				elif ray_r_r.is_colliding():
-					rot_dir = 0
 				else:
 					rot_dir = 1
 			0:
@@ -142,7 +138,6 @@ func set_shot_direction():
 			var body = shot_ray.get_collider()
 			if body.is_in_group("wall"):
 				pass
-				#print("can't see shit")
 			else:
 				var angle_between = fd.angle_to(shot_dir) * (180/PI)
 				if (angle_between) < 0:
@@ -151,7 +146,6 @@ func set_shot_direction():
 					rot_dir = 1
 				
 				if (abs(angle_between)) < 5:
-				#	print("shoot")
 					rot_dir = 0
 					velocity = Vector2(speed_fwd * 0.1, 0).rotated(rotation)
 				
