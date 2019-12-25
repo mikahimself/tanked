@@ -18,8 +18,4 @@ func get_controls():
 		velocity = Vector2(speed_rev, 0).rotated(rotation)
 	
 	if Input.is_action_pressed("shoot") and can_shoot:
-		can_shoot = false
-		var bullet_pos = global_position + bullet_offset.rotated(rotation)
-		var bullet_dir_now = bullet_dir.rotated(rotation)
-		shot_timer.start()
-		emit_signal("shot_bullet", bullet_pos, bullet_dir_now)
+		shoot()

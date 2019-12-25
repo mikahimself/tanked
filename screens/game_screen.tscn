@@ -28,6 +28,7 @@ wait_time = 2.0
 autostart = true
 
 [node name="Shader" type="Control" parent="."]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 

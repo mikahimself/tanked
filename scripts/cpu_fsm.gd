@@ -5,23 +5,26 @@ func _ready():
 	add_state("drive_forward")
 	add_state("drive_backward")
 	add_state("turn_while_idle")
-	call_deferred("set_state", states.drive_forward)
+	call_deferred("set_state", states.idle)
 
 func _state_logic(delta):
 	parent.check_distance_to_waypoint()
 	parent.set_movement_velocity(state, states)
 	parent.set_turn_direction(parent.get_target_direction(), state, states)
 	parent._apply_rotation(delta)
+	parent.check_shot_direction()
 	#parent._apply_movement(delta)
 
 func _get_transition(delta):
 	match state:
 		states.idle:
-			if parent.velocity.normalized().dot(Vector2.RIGHT.rotated(parent.rotation)) > 0:
+			if parent.is_target_in_front() and not parent.is_colliding_with_tank():
 				return states.drive_forward
-			elif parent.velocity.normalized().dot(Vector2.LEFT.rotated(parent.rotation)) > 0 :
+			elif parent.is_target_directly_behind():
 				return states.drive_backward
 		states.drive_forward:
+			if parent.is_colliding_with_tank():
+				return states.idle
 			if not parent.is_target_in_front():
 				if not parent.is_target_directly_behind():
 					return states.turn_while_idle

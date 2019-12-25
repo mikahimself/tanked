@@ -7,15 +7,15 @@ var goal: Vector2 = Vector2() setget set_goal
 var forward_dir: Vector2 = Vector2()
 var target_dir: Vector2 = Vector2()
 var shot_dir: Vector2 = Vector2()
-
 var no_turn_angle: int = 5
 
 # Raycasts
-onready var shot_ray: RayCast2D = get_node("raycast_container/Ray_Gun")
+onready var ray_gun: RayCast2D = get_node("raycast_container/Ray_Gun")
 onready var ray_right_side: RayCast2D = get_node("raycast_container/Ray_Right_Side")
 onready var ray_left_side: RayCast2D = get_node("raycast_container/Ray_Left_Side")
 onready var ray_right_front: RayCast2D = get_node("raycast_container/Ray_Right_Front")
 onready var ray_left_front: RayCast2D = get_node("raycast_container/Ray_Left_Front")
+onready var ray_front: RayCast2D = get_node("Ray_Front")
 
 # CPU parametes
 export (int) var seek_distance = 20
@@ -121,34 +121,31 @@ func set_movement_velocity(state, states):
 			velocity = Vector2(speed_rev, 0).rotated(rotation)
 		states.turn_while_idle:
 			velocity = Vector2.ZERO
+		states.idle:
+			velocity = Vector2.ZERO
 
 func check_distance_to_waypoint() -> void:
 	if path.size() > 0:
 		var d = position.distance_to(path[0])
 		if d < seek_distance:
 			path.remove(0)
+			
+func is_colliding_with_tank() -> bool:
+	if ray_front.is_colliding():
+		var body = ray_front.get_collider()
+		if body.is_in_group("tank"):
+			return true
+		else:
+			return false
+	else:
+		return false
 
-func set_shot_direction():
-	var d = position.distance_to(goal)
-	var fd = Vector2.RIGHT
-	if d < shot_distance:
-		shot_dir = position.direction_to(goal).rotated(-rotation)
-		
-		if shot_ray.is_colliding():
-			var body = shot_ray.get_collider()
-			if body.is_in_group("wall"):
-				pass
-			else:
-				var angle_between = fd.angle_to(shot_dir) * (180/PI)
-				if (angle_between) < 0:
-					rot_dir = -1
-				elif (angle_between) >= 0:
-					rot_dir = 1
-				
-				if (abs(angle_between)) < 5:
-					rot_dir = 0
-					velocity = Vector2(speed_fwd * 0.1, 0).rotated(rotation)
-				
-	
-func fire_cannon():
-	pass
+func check_shot_direction():
+	if ray_gun.is_colliding():
+		var body = ray_gun.get_collider()
+		if body.is_in_group("wall"):
+			pass
+		elif body.is_in_group("player"):
+			if can_shoot:
+				shoot()
+					

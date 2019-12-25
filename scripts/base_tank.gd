@@ -65,7 +65,12 @@ func _apply_movement(delta):
 func _physics_process(delta):
 	_apply_movement(delta)
 
-	
+func shoot() -> void:
+	can_shoot = false
+	var bullet_pos = global_position + bullet_offset.rotated(rotation)
+	var bullet_dir_now = bullet_dir.rotated(rotation)
+	shot_timer.start()
+	emit_signal("shot_bullet", bullet_pos, bullet_dir_now)
 	
 func _on_shot_timer_timeout():
 	can_shoot = true

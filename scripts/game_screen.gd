@@ -27,7 +27,6 @@ func _ready():
 	rng.randomize()
 	path_update_timer.wait_time = search_interval
 	path_update_timer.start()
-	$player.connect("shot_bullet", self, "on_bullet_shot")
 
 func setup_level() -> void:
 	var level = load(game_data.levels[game_data.current_level])
@@ -42,6 +41,7 @@ func setup_tanks() -> void:
 		player.my_id = plr_id
 		player.position = current_level.start_positions[plr_id]
 		player.rotation = current_level.start_rotations[plr_id]
+		player.connect("shot_bullet", self, "on_bullet_shot")
 		player_tanks.append(player)
 		add_child(player)
 		plr_id += 1
@@ -53,7 +53,9 @@ func setup_tanks() -> void:
 		enemy.rotation = current_level.start_rotations[plr_id]
 		enemy.goal = player_tanks[0].position
 		enemy.nav = nav
+		enemy.connect("shot_bullet", self, "on_bullet_shot")
 		cpu_tanks.append(enemy)
+		enemy.debug = false
 		add_child(enemy)
 		plr_id += 1
 
