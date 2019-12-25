@@ -14,12 +14,15 @@ var bullet_dir = Vector2(1, 0)
 
 # Booleans
 var can_shoot = true
-var is_cpu_controlled = false
+var is_cpu = false
 export (bool) var debug = false
 
 # Nodes
 onready var shadow = $shadow
 onready var shot_timer = $shot_timer
+
+# Identifiers
+var my_id: int = 0
 
 
 var bullet = load("res://scenes/bullet.tscn")
