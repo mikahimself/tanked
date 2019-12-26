@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Tank"
-run/main_scene="res://screens/game_screen.tscn"
+run/main_scene="res://screens/main_menu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
