@@ -23,7 +23,7 @@ visible = false
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
-hframes = 8
+hframes = 10
 frame = 7
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
