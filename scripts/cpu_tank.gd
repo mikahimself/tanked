@@ -110,6 +110,8 @@ func set_turn_direction(target, state, states):
 					rot_dir = 1
 			0:
 				rot_dir = 0
+	elif state == states.idle:
+		rot_dir = 0
 	else:
 		rot_dir = target
 
