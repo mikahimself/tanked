@@ -8,6 +8,7 @@
 [node name="base_tank" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 gun_cooldown_period = 1.0
+seek_distance = 10
 
 [node name="tank" parent="." index="2"]
 texture = ExtResource( 3 )
@@ -16,43 +17,96 @@ texture = ExtResource( 3 )
 enabled = true
 cast_to = Vector2( 65, 0 )
 
-[node name="raycast_container" type="Node2D" parent="." index="6"]
+[node name="Ray_Front_1" type="RayCast2D" parent="." index="6"]
+position = Vector2( 0, -12 )
+enabled = true
+cast_to = Vector2( 70, 0 )
+collision_mask = 3
+
+[node name="Ray_Front_2" type="RayCast2D" parent="." index="7"]
+position = Vector2( 0, 12 )
+enabled = true
+cast_to = Vector2( 70, 0 )
+collision_mask = 3
+
+[node name="Ray_Front_3" type="RayCast2D" parent="." index="8"]
+enabled = true
+cast_to = Vector2( 70, 0 )
+collision_mask = 3
+
+[node name="Ray_Front_Right" type="RayCast2D" parent="." index="9"]
+enabled = true
+cast_to = Vector2( 43.3, 25 )
+collision_mask = 3
+
+[node name="Ray_Front_Right2" type="RayCast2D" parent="." index="10"]
+enabled = true
+cast_to = Vector2( 48, 14 )
+collision_mask = 3
+
+[node name="Ray_Front_Left" type="RayCast2D" parent="." index="11"]
+enabled = true
+cast_to = Vector2( 43.3, -25 )
+collision_mask = 3
+
+[node name="Ray_Front_Left2" type="RayCast2D" parent="." index="12"]
+enabled = true
+cast_to = Vector2( 48, -14 )
+collision_mask = 3
+
+[node name="Ray_Right_Front_Turn" type="RayCast2D" parent="." index="13"]
+enabled = true
+cast_to = Vector2( 35, 36 )
+collision_mask = 3
+
+[node name="Ray_Left_Front_Turn" type="RayCast2D" parent="." index="14"]
+enabled = true
+cast_to = Vector2( 35, -36 )
+collision_mask = 3
+
+[node name="raycast_container" type="Node2D" parent="." index="15"]
 
 [node name="Ray_Gun" type="RayCast2D" parent="raycast_container" index="0"]
+visible = false
 position = Vector2( 20, 0 )
 enabled = true
 cast_to = Vector2( 250, 0 )
 collision_mask = 3
 
 [node name="Ray_Right_Side" type="RayCast2D" parent="raycast_container" index="1"]
+visible = false
 position = Vector2( 10, 10 )
 enabled = true
 cast_to = Vector2( 0, 15 )
 collision_mask = 2
 
 [node name="Ray_Right_Front" type="RayCast2D" parent="raycast_container" index="2"]
+visible = false
 position = Vector2( 0, 15 )
 enabled = true
 cast_to = Vector2( 35, 10 )
 collision_mask = 3
 
 [node name="Ray_Left_Side" type="RayCast2D" parent="raycast_container" index="3"]
+visible = false
 position = Vector2( 10, -10 )
 enabled = true
 cast_to = Vector2( 0, -15 )
 collision_mask = 2
 
 [node name="Ray_Left_Front" type="RayCast2D" parent="raycast_container" index="4"]
+visible = false
 position = Vector2( 0, -14 )
 enabled = true
 cast_to = Vector2( 35, -10 )
 collision_mask = 2
 
 [node name="Ray_Rear" type="RayCast2D" parent="raycast_container" index="5"]
+visible = false
 position = Vector2( 0, -1 )
 enabled = true
 cast_to = Vector2( -70, 0 )
 collision_mask = 2
 
-[node name="StateMachine" type="Node2D" parent="." index="7"]
+[node name="StateMachine" type="Node2D" parent="." index="16"]
 script = ExtResource( 4 )
