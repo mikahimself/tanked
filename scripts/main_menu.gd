@@ -1,7 +1,6 @@
 extends Control
 
-#onready var start_button = get_node("VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/StartGameButton")
-onready var players_button = get_node("VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/NoOfPlayersButton")
+onready var players_button: Button = get_node("VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/NoOfPlayersButton")
 var players: int = 1
 
 func _ready():

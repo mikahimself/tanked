@@ -6,15 +6,15 @@ var is_chroma_on = true
 export (float) var search_interval = 0.5
 
 # Node references
-onready var nav = get_node("nav")
-onready var bullet_container = get_node("bullet_container")
-onready var path_update_timer = get_node("path_update_timer")
-onready var target_container = get_node("target_container")
-onready var shader = get_node("Shader/ChromaticAberration")
+onready var nav: Navigation2D = get_node("nav")
+onready var bullet_container: Node2D = get_node("bullet_container")
+onready var path_update_timer: Timer = get_node("path_update_timer")
+onready var target_container: Node2D = get_node("target_container")
+onready var shader: TextureRect = get_node("Shader/ChromaticAberration")
 onready var rng = RandomNumberGenerator.new()
 
-var target = load("res://scenes/target.tscn")
-var bullet = load("res://scenes/bullet.tscn")
+var target: PackedScene = load("res://scenes/target.tscn")
+var bullet: PackedScene = load("res://scenes/bullet.tscn")
 
 
 var current_level: Node2D
@@ -65,7 +65,7 @@ func _process(delta):
 	else:
 		ramp_down_chroma(delta)
 
-func _on_Timer_timeout():
+func _on_Timer_timeout() -> void:
 	for tank in cpu_tanks:
 		var new_target_pos = check_distance_to_players(tank.position)
 		tank.set_goal(new_target_pos)
@@ -73,7 +73,7 @@ func _on_Timer_timeout():
 	if debug:
 		draw_tracks()
 
-func check_distance_to_players(cpu_position):
+func check_distance_to_players(cpu_position) -> Vector2:
 	var selected = 0
 	var shortest = 9999
 	for i in range (0, player_tanks.size()):

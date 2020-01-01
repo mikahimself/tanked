@@ -10,7 +10,6 @@ func _ready():
 func _state_logic(delta):
 	parent.get_controls()
 	parent._apply_rotation(delta)
-#	parent._apply_movement(delta)
 
 func _get_transition(delta):
 	match state:
@@ -32,13 +31,7 @@ func _get_transition(delta):
 	return null
 
 func _enter_state(new_state, old_state):
-	match new_state:
-		states.idle:
-			pass #print("IDLING")
-		states.drive_forward:
-			pass #print("FORWARD")
-		states.drive_backward:
-			pass #print("BACKWARD")
+	pass
 
 func _exit_state(old_state, new_state):
 	pass

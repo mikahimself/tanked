@@ -15,7 +15,7 @@ func _physics_process(delta):
 		if transition != null:
 			set_state(transition)
 
-func _state_logic(delta):
+func _state_logic(delta) -> void:
 	pass
 
 func _get_transition(delta):
@@ -27,7 +27,7 @@ func _enter_state(new_state, old_state):
 func _exit_state(old_state, new_state):
 	pass
 
-func set_state(new_state):
+func set_state(new_state) -> void:
 	previous_state = state
 	state = new_state
 
@@ -36,5 +36,5 @@ func set_state(new_state):
 	if new_state != null:
 		_enter_state(new_state, previous_state)
 
-func add_state(state_name):
+func add_state(state_name) -> void:
 	states[state_name] = states.size()
