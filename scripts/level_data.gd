@@ -2,6 +2,7 @@ extends Node2D
 
 export (int) var level_no = 0
 export (int) var no_of_enemies = 0
+export (String) var level_name = ""
 
 export (Vector2) var p1_start_position = Vector2.ZERO
 export (Vector2) var p2_start_position = Vector2.ZERO

@@ -21,6 +21,8 @@ func _process(delta):
 
 func _on_Area2D_body_entered(body) -> void:
 	velocity = Vector2.ZERO
+	if body.is_in_group("tank"):
+		position = body.position
 	explosion.visible = true
 	get_node("Sprite").visible = false
 	rotation_degrees = 0

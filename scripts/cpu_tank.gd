@@ -8,6 +8,7 @@ var forward_dir: Vector2 = Vector2()
 var target_dir: Vector2 = Vector2()
 var shot_dir: Vector2 = Vector2()
 var no_turn_angle: int = 5
+var target: KinematicBody2D = null
 
 # Raycasts
 onready var ray_gun: RayCast2D = get_node("raycast_container/Ray_Gun")
@@ -25,8 +26,10 @@ onready var ray_front_3 = get_node("Ray_Front_3")
 
 
 # CPU parametes
-export (int) var seek_distance = 20
+export (int) var seek_distance = 40
 export (int) var shot_distance = 250
+
+var is_line_to_target: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,7 +37,8 @@ func _ready():
 
 # Set target to player
 func set_goal(new_goal) -> void:
-	goal = new_goal
+	goal = new_goal.position
+	target = new_goal
 	if (nav):
 		update_path()
 
@@ -60,7 +64,6 @@ func update_path() -> void:
 #		draw_line(Vector2(0,0), target_dir * 50, Color(0,255,0), 3)
 #		draw_line(Vector2(0,0), shot_dir * 175, Color(0,0,255), 3)
 
-
 func is_target_in_front() -> bool:
 	if path.size() > 0:
 		var target_dir = position.direction_to(path[0]).rotated(-rotation)
@@ -70,6 +73,27 @@ func is_target_in_front() -> bool:
 		else:
 			return false
 	return true
+
+func get_distance_to_target() -> float:
+	if target != null:
+		return position.distance_to(target.position)
+	return 0.0
+
+func get_angle_to_target_node() -> float:
+	if target != null:
+		var target_dir = position.direction_to(target.position).rotated(-rotation)
+		var angle_between = Vector2.RIGHT.angle_to(target_dir) * (180/PI)
+		return angle_between
+	return 0.0
+
+func aim():
+	if target != null:
+		is_line_to_target = false
+		var space_state = get_world_2d().direct_space_state
+		var result = space_state.intersect_ray(position, target.position, [self])
+		if result != null:
+			if result.collider == target:
+				is_line_to_target = true
 
 func is_target_directly_behind() -> bool:
 	if path.size() > 0:
@@ -152,7 +176,7 @@ func get_right_raycast_length() -> float:
 
 func get_front_raycast_length() -> float:
 	var ray_total = 0
-	var ray_length = 50
+	var ray_length = 70
 
 	if not ray_front_1.is_colliding():
 		ray_total += ray_length
@@ -177,13 +201,22 @@ func get_available_direction() -> int:
 		return -1
 	elif get_right_raycast_length() > get_left_raycast_length():
 		return 1
+	elif get_right_raycast_length() == get_left_raycast_length():
+		var dirs = [-1, 1]
+		return dirs[randi() % dirs.size()]
 	else:
 		return 0
-	
 
 func set_turn_direction(target, state, states) -> void:
 	if state == states.drive_forward or state == states.drive_backward:
 		rot_dir = 0
+	elif state == states.aim:
+		if get_angle_to_target_node() > 1:
+			rot_dir = 1
+		elif get_angle_to_target_node() < -1:
+			rot_dir = -1
+		else:
+			rot_dir = 0
 	elif state == states.idle:
 		rot_dir = target
 	elif state == states.turn_right or state == states.turn_right_while_blocked:
@@ -201,10 +234,6 @@ func set_movement_velocity(state, states) -> void:
 			velocity = Vector2(speed_fwd, 0).rotated(rotation)
 		states.drive_backward:
 			velocity = Vector2(speed_rev, 0).rotated(rotation)
-		states.idle:
-			velocity = Vector2.ZERO
-		states.blocked:
-			velocity = Vector2.ZERO
 		states.drive_around_block:
 			velocity = Vector2(speed_fwd, 0).rotated(rotation)
 		states.turn_right:
@@ -217,6 +246,17 @@ func set_movement_velocity(state, states) -> void:
 				velocity = Vector2(speed_fwd, 0).rotated(rotation)
 			else:
 				velocity = Vector2.ZERO
+		states.idle:
+			velocity = Vector2.ZERO
+		states.aim:
+			velocity = Vector2.ZERO
+		states.blocked:
+			velocity = Vector2.ZERO
+		states.turn_right_while_blocked:
+			velocity = Vector2.ZERO
+		states.turn_left_while_blocked:
+			velocity = Vector2.ZERO
+
 
 func check_distance_to_waypoint() -> void:
 	if path.size() > 0:

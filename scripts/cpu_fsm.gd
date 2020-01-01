@@ -17,6 +17,7 @@ func _ready():
 	add_state("turn_left_while_blocked")
 	add_state("turn_right")
 	add_state("turn_left")
+	add_state("aim")
 	add_state("blocked")
 	call_deferred("set_state", states.idle)
 
@@ -34,7 +35,9 @@ func _get_transition(delta):
 
 	match state:
 		states.turn_left:
-			if parent.get_front_raycast_length() < front_clear_distance and parent.is_colliding_with_tank():
+			if parent.get_distance_to_target() < 30 and parent.is_line_to_target:
+				return states.aim
+			elif parent.get_front_raycast_length() < front_clear_distance and parent.is_colliding_with_tank():
 				return states.blocked
 			elif abs(angle_to_target) > turn_idle_angle:
 				return states.idle
@@ -44,7 +47,9 @@ func _get_transition(delta):
 				return states.drive_forward
 			
 		states.turn_right:
-			if parent.get_front_raycast_length() < front_clear_distance and parent.is_colliding_with_tank():
+			if parent.get_distance_to_target() < 30 and parent.is_line_to_target:
+				return states.aim
+			elif parent.get_front_raycast_length() < front_clear_distance and parent.is_colliding_with_tank():
 				return states.blocked
 			elif abs(angle_to_target) > turn_idle_angle:
 				return states.idle
@@ -54,6 +59,8 @@ func _get_transition(delta):
 				return states.drive_forward
 			
 		states.idle:
+			if parent.get_distance_to_target() < 30 and parent.is_line_to_target:
+				return states.aim
 			if parent.get_front_raycast_length() < front_clear_distance and parent.is_colliding_with_tank():
 				if not parent.is_colliding_with_player():
 					return states.blocked
@@ -61,17 +68,23 @@ func _get_transition(delta):
 				return states.turn_right
 			elif angle_to_target < 0 and not parent.is_colliding_with_tank() and parent.get_front_raycast_length() > front_min_distance:
 				return states.turn_left
-			elif parent.is_target_in_front() and not parent.is_colliding_with_tank() and parent.get_front_raycast_length() > front_clear_distance:
+			elif parent.is_target_in_front() and not parent.is_colliding_with_tank() and parent.get_front_raycast_length() >= front_clear_distance:
 				return states.drive_forward
 			elif parent.is_target_directly_behind():
 				return states.drive_backward
 			
 		states.drive_forward:
-			if angle_to_target > turn_angle_front and parent.get_right_raycast_length() > side_clear_distance:
+			if parent.get_distance_to_target() < 30 and parent.is_line_to_target:
+				return states.aim
+			elif angle_to_target > turn_angle_front and parent.get_right_raycast_length() > side_clear_distance:
 				return states.turn_right
 			elif angle_to_target < -(turn_angle_front) and parent.get_left_raycast_length() > side_clear_distance:
 				return states.turn_left
 			elif parent.get_front_raycast_length() < front_clear_distance:
+				return states.idle
+
+		states.aim:
+			if parent.get_distance_to_target() >= 30:
 				return states.idle
 
 		states.blocked:
@@ -83,17 +96,17 @@ func _get_transition(delta):
 				return states.turn_left_while_blocked
 
 		states.turn_right_while_blocked:
-			if parent.get_front_raycast_length() >= 140:
+			if parent.get_front_raycast_length() >= 160:
 				return states.drive_around_block
 		
 		states.turn_left_while_blocked:
-			if parent.get_front_raycast_length() >= 140:
+			if parent.get_front_raycast_length() >= 160:
 				return states.drive_around_block
 
 		states.drive_around_block:
-			if parent.get_front_raycast_length() < 140 and parent.get_available_direction() == 1:
+			if parent.get_front_raycast_length() < 160 and parent.get_available_direction() == 1:
 				return states.turn_right_while_blocked
-			elif parent.get_front_raycast_length() < 140 and parent.get_available_direction() == -1:
+			elif parent.get_front_raycast_length() < 160 and parent.get_available_direction() == -1:
 				return states.turn_left_while_blocked
 			elif parent.get_front_raycast_length() > 170:
 				return states.drive_forward
@@ -104,11 +117,11 @@ func _get_transition(delta):
 			
 	return null
 
-# What do when entering a state. Use perhaps with match.
+# What do when entering a state. Use match.
 func _enter_state(new_state, old_state) -> void:
 	pass
-
-# What do when exiting a state. Use perhaps with match.
+	
+# What do when exiting a state. Use match.
 func _exit_state(old_state, new_state) -> void:
 	pass
 

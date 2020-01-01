@@ -1,8 +1,9 @@
 extends Node
 
 # Preload level scenes
-var Level_1: String = "res://levels/level_1.tscn"
-var Level_2: String = "res://levels/level_2.tscn"
+var Level_1: String = "res://levels/level_01.tscn"
+var Level_2: String = "res://levels/level_02.tscn"
+var Level_3: String = "res://levels/level_2.tscn"
 var levels: Array = []
 
 # Preload vehicles

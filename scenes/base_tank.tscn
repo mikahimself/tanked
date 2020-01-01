@@ -8,15 +8,19 @@
 extents = Vector2( 7, 3 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 13, 14 )
+extents = Vector2( 8, 8 )
 
 [node name="base_tank" type="KinematicBody2D" groups=[
 "tank",
 ]]
 z_index = -2
 script = ExtResource( 1 )
+speed_fwd = 60.0
+speed_rev = -40.0
+rot_speed = 2.0
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 16, 0 )
 shape = SubResource( 1 )
 disabled = true
@@ -30,7 +34,7 @@ texture = ExtResource( 3 )
 [node name="shot_timer" type="Timer" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -6, 0 )
+position = Vector2( -4, 0 )
 rotation = 1.5708
 shape = SubResource( 2 )
 [connection signal="timeout" from="shot_timer" to="." method="_on_shot_timer_timeout"]

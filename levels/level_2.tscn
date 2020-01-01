@@ -6,6 +6,7 @@
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
 no_of_enemies = 2
+level_name = "Parentheses"
 p1_start_position = Vector2( 60, 375 )
 p2_start_position = Vector2( 700, 65 )
 p3_start_position = Vector2( 60, 65 )

@@ -131,6 +131,33 @@ region_rect = Rect2( 70, 37, 32, 32 )
 position = Vector2( 4, 0 )
 shape = SubResource( 7 )
 
+[node name="border_left_connect" type="Sprite" parent="."]
+position = Vector2( 288, 64 )
+z_index = -1
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 138, 37, 32, 32 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="border_left_connect"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="border_left_connect/StaticBody2D"]
+polygon = PoolVector2Array( -16, -16, 7, -16, 7, -9, 16, -9, 16, 9, 7, 9, 7, 16, -16, 16 )
+
+[node name="border_top_connect" type="Sprite" parent="."]
+position = Vector2( 352, 64 )
+z_index = -1
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 172, 37, 32, 32 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="border_top_connect"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="border_top_connect/StaticBody2D"]
+polygon = PoolVector2Array( -16, -16, 16, -16, 16, 7, 9, 7, 9, 16, -9, 16, -9, 7, -16, 7 )
+
 [node name="corner_lt" type="Sprite" parent="."]
 position = Vector2( 32, 128 )
 z_index = -1
@@ -310,6 +337,21 @@ region_rect = Rect2( 104, 139, 32, 32 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="wall_cor_bt/StaticBody2D"]
 polygon = PoolVector2Array( -9, -16, 7, -16, 7, -9, 16, -9, 16, 7, -9, 7 )
+
+[node name="single_block" type="Sprite" parent="."]
+position = Vector2( 288, 256 )
+z_index = -1
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 138, 139, 32, 32 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="single_block"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="single_block/StaticBody2D"]
+polygon = PoolVector2Array( -11, -8, -1, -8, 7, -8, 11, -8, 11, 8, -11, 8 )
 
 [node name="wall_border_left" type="Sprite" parent="."]
 position = Vector2( 33, 321 )

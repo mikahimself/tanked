@@ -40,7 +40,7 @@ func setup_tanks() -> void:
 		var player = game_data.PlayerTank.instance()
 		player.my_id = plr_id
 		player.position = current_level.start_positions[plr_id - 1]
-		player.rotation = current_level.start_rotations[plr_id - 1]
+		player.rotation_degrees = current_level.start_rotations[plr_id - 1]
 		player.connect("shot_bullet", self, "on_bullet_shot")
 		player_tanks.append(player)
 		add_child(player)
@@ -48,10 +48,10 @@ func setup_tanks() -> void:
 		
 	for i in range (0, current_level.no_of_enemies):
 		var enemy = game_data.CpuTank.instance()
+		enemy.is_cpu = true
 		enemy.my_id = plr_id
 		enemy.position = current_level.start_positions[plr_id - 1]
-		enemy.rotation = current_level.start_rotations[plr_id - 1]
-		enemy.goal = player_tanks[0].position
+		enemy.rotation_degrees = current_level.start_rotations[plr_id - 1]
 		enemy.nav = nav
 		enemy.connect("shot_bullet", self, "on_bullet_shot")
 		cpu_tanks.append(enemy)
@@ -67,8 +67,8 @@ func _process(delta):
 
 func _on_Timer_timeout() -> void:
 	for tank in cpu_tanks:
-		var new_target_pos = check_distance_to_players(tank.position)
-		tank.set_goal(new_target_pos)
+		var new_target = check_distance_to_players(tank.position)
+		tank.set_goal(new_target)
 
 	if debug:
 		draw_tracks()
@@ -80,7 +80,7 @@ func check_distance_to_players(cpu_position) -> Vector2:
 		if cpu_position.distance_to(player_tanks[i].position) < shortest:
 			selected = i
 			shortest = cpu_position.distance_to(player_tanks[i].position)
-	return player_tanks[selected].position
+	return player_tanks[selected]
 
 func ramp_up_chroma(delta) -> void:
 	var value = shader.material.get_shader_param("amount")

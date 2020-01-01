@@ -9,12 +9,13 @@ export (float) var gun_cooldown_period = 0.5
 # Rotation and velocity
 var rot_dir: int = 0
 var velocity: Vector2 = Vector2(0,0)
-var bullet_offset: Vector2 = Vector2(30, 0)
+var shadow_offset: Vector2 = Vector2(2, 2)
+var bullet_offset: Vector2 = Vector2(10, 0)
 var bullet_dir: Vector2 = Vector2(1, 0)
 
 # Booleans
 var can_shoot: bool = true
-#var is_cpu: bool = false
+var is_cpu: bool = false
 export (bool) var debug = false
 
 # Nodes
@@ -46,7 +47,7 @@ func _process(delta):
 	update()
 
 func offset_shadow() -> void:
-	shadow.position = Vector2(4,4).rotated(-rotation)
+	shadow.position = shadow_offset.rotated(-rotation)
 	
 func _apply_rotation(delta) -> void:
 	rotation += rot_dir * rot_speed * delta
@@ -57,8 +58,13 @@ func _apply_movement(delta) -> void:
 		if collision:
 			velocity = velocity.slide(collision.normal)
 
+func aim():
+	pass
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
+	if is_cpu:
+		aim()
 	_apply_movement(delta)
 
 func shoot() -> void:
