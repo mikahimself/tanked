@@ -21,6 +21,7 @@ export (bool) var debug = false
 # Nodes
 onready var shadow = $shadow
 onready var shot_timer = $shot_timer
+onready var audio_shoot = $Audio_Shoot
 
 # Identifiers
 var my_id: int = 0
@@ -73,6 +74,7 @@ func shoot() -> void:
 	var bullet_dir_now = bullet_dir.rotated(rotation)
 	shot_timer.start()
 	emit_signal("shot_bullet", bullet_pos, bullet_dir_now)
+	audio_shoot.play()
 	
 func _on_shot_timer_timeout() -> void:
 	can_shoot = true
