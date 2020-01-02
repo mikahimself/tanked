@@ -257,7 +257,6 @@ func set_movement_velocity(state, states) -> void:
 		states.turn_left_while_blocked:
 			velocity = Vector2.ZERO
 
-
 func check_distance_to_waypoint() -> void:
 	if path.size() > 0:
 		var d = position.distance_to(path[0])

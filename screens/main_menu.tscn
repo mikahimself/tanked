@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://themes/tanked_theme.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/main_menu.gd" type="Script" id=2]
 [ext_resource path="res://tilemap/tilemap.tres" type="TileSet" id=3]
 [ext_resource path="res://themes/fonts/title-font.tres" type="DynamicFont" id=4]
 [ext_resource path="res://art/logo.png" type="Texture" id=5]
+[ext_resource path="res://audio/sfx/menu_move.wav" type="AudioStream" id=6]
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -122,6 +123,18 @@ margin_right = 768.0
 margin_bottom = 432.0
 texture = ExtResource( 5 )
 stretch_mode = 6
+
+[node name="Audio_Move_Start" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -15.0
+
+[node name="Audio_Move" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -15.0
+[connection signal="focus_exited" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/NoOfPlayersButton" to="." method="_on_NoOfPlayersButton_focus_exited"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/NoOfPlayersButton" to="." method="_on_NoOfPlayersButton_pressed"]
+[connection signal="focus_exited" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/StartGameButton" to="." method="_on_StartGameButton_focus_exited"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/StartGameButton" to="." method="_on_StartGameButton_pressed"]
+[connection signal="focus_exited" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/QuitGameButton" to="." method="_on_QuitGameButton_focus_exited"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/QuitGameButton" to="." method="_on_QuitGameButton_pressed"]
+[connection signal="finished" from="Audio_Move_Start" to="." method="_on_Audio_Move_Start_finished"]

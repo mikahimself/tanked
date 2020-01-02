@@ -39,7 +39,7 @@ position = Vector2( -4, 0 )
 rotation = 1.5708
 shape = SubResource( 2 )
 
-[node name="Audio_Shoot" type="AudioStreamPlayer2D" parent="."]
+[node name="Audio_Shoot" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
-volume_db = -5.0
+volume_db = -15.0
 [connection signal="timeout" from="shot_timer" to="." method="_on_shot_timer_timeout"]
