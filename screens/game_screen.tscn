@@ -1,17 +1,120 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/game_screen.gd" type="Script" id=1]
-[ext_resource path="res://shaders/chromatic_aberration.shader" type="Shader" id=2]
-[ext_resource path="res://art/white.png" type="Texture" id=3]
+[ext_resource path="res://scripts/PauseMenu.gd" type="Script" id=2]
+[ext_resource path="res://themes/tanked_theme.tres" type="Theme" id=3]
+[ext_resource path="res://themes/fonts/pause-menu-title-font.tres" type="DynamicFont" id=4]
+[ext_resource path="res://themes/buttons/pause-menu-button-hover.tres" type="StyleBox" id=5]
+[ext_resource path="res://themes/buttons/pause-menu-button-normal.tres" type="StyleBox" id=6]
+[ext_resource path="res://shaders/chromatic_aberration.shader" type="Shader" id=7]
+[ext_resource path="res://art/white.png" type="Texture" id=8]
 
 [sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 2 )
+shader = ExtResource( 7 )
 shader_param/apply = true
 shader_param/amount = 0.0
 
 [node name="GameScreen" type="Node2D"]
 script = ExtResource( 1 )
 debug = true
+
+[node name="PauseMenu" type="Control" parent="."]
+pause_mode = 2
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 768.0
+margin_bottom = 432.0
+script = ExtResource( 2 )
+
+[node name="PauseOverlay" type="ColorRect" parent="PauseMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.5094
+margin_top = -0.37735
+margin_right = -1.5094
+margin_bottom = -0.37735
+color = Color( 0.266667, 0.266667, 0.160784, 0.352941 )
+
+[node name="Panel" type="Panel" parent="PauseMenu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -80.0
+margin_top = -50.0
+margin_right = 80.0
+margin_bottom = 50.0
+theme = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="PauseMenu/Panel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -28.0
+margin_top = 6.0
+margin_right = 28.0
+margin_bottom = 30.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.45098, 0.509804, 0.360784, 1 )
+text = "PAUSED"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -84.0
+margin_top = -18.0
+margin_right = 84.0
+margin_bottom = 66.0
+custom_constants/separation = 4
+
+[node name="ContinueButton" type="Button" parent="PauseMenu/Panel/VBoxContainer"]
+margin_left = 24.0
+margin_right = 144.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 120, 0 )
+focus_neighbour_left = NodePath("../BackToMenuButton")
+focus_neighbour_top = NodePath("../BackToMenuButton")
+focus_neighbour_right = NodePath("../BackToMenuButton")
+focus_neighbour_bottom = NodePath("../BackToMenuButton")
+focus_next = NodePath("../BackToMenuButton")
+focus_previous = NodePath("../BackToMenuButton")
+size_flags_horizontal = 4
+custom_styles/hover = ExtResource( 5 )
+custom_styles/pressed = ExtResource( 5 )
+custom_styles/focus = ExtResource( 5 )
+custom_styles/normal = ExtResource( 6 )
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.45098, 0.509804, 0.360784, 1 )
+custom_colors/font_color_hover = Color( 0.45098, 0.509804, 0.360784, 1 )
+custom_colors/font_color_pressed = Color( 0.886275, 0.87451, 0.694118, 1 )
+custom_constants/hseparation = 20
+text = "RESUME"
+
+[node name="BackToMenuButton" type="Button" parent="PauseMenu/Panel/VBoxContainer"]
+margin_left = 24.0
+margin_top = 28.0
+margin_right = 144.0
+margin_bottom = 52.0
+rect_min_size = Vector2( 120, 0 )
+focus_neighbour_left = NodePath("../ContinueButton")
+focus_neighbour_top = NodePath("../ContinueButton")
+focus_neighbour_right = NodePath("../ContinueButton")
+focus_neighbour_bottom = NodePath("../ContinueButton")
+focus_next = NodePath("../ContinueButton")
+focus_previous = NodePath("../ContinueButton")
+size_flags_horizontal = 4
+size_flags_vertical = 4
+custom_styles/hover = ExtResource( 5 )
+custom_styles/pressed = ExtResource( 5 )
+custom_styles/focus = ExtResource( 5 )
+custom_styles/normal = ExtResource( 6 )
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.45098, 0.509804, 0.360784, 1 )
+custom_colors/font_color_hover = Color( 0.45098, 0.509804, 0.360784, 1 )
+custom_colors/font_color_pressed = Color( 0.886275, 0.87451, 0.694118, 1 )
+text = "QUIT GAME"
 
 [node name="bullet_container" type="Node" parent="."]
 
@@ -38,7 +141,9 @@ margin_right = 768.0
 margin_bottom = 432.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-texture = ExtResource( 3 )
+texture = ExtResource( 8 )
 expand = true
+[connection signal="pressed" from="PauseMenu/Panel/VBoxContainer/ContinueButton" to="PauseMenu" method="_on_ContinueButton_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/VBoxContainer/BackToMenuButton" to="PauseMenu" method="_on_BackToMenuButton_pressed"]
 [connection signal="timeout" from="path_update_timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="chroma_update_timer" to="." method="_on_chroma_update_timer_timeout"]

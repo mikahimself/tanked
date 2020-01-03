@@ -117,3 +117,8 @@ func on_bullet_shot(bullet_position, bullet_direction) -> void:
 	var b = bullet.instance()
 	bullet_container.add_child(b)
 	b.start(bullet_position, bullet_direction)
+
+func quit_game():
+	player_tanks = []
+	cpu_tanks = []
+	get_tree().change_scene("res://screens/main_menu.tscn")
