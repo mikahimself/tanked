@@ -1,13 +1,21 @@
 # Tanked
 
-An old-timey, single or two player tank game that may, to some eyes, vaguely resemble Kee Games' Tank made with the Godot Engine. The second player controlled tank is currently missing, though.
+An old-timey, single or two player tank game inspired by Kee Games' Tank. Made with Godot Engine.
 
-Current features:
-- Player controlled tank
-- CPU controlled tank that chases the player
+## Current features:
+- One or two player mode
+- CPU controlled tank(s) that chase the player
 - Bullets that do not damage anything
 - Amazing Game Boy-esque graphics
+- Fantabulous pause menu
 
-Controls:
-- Movement: Arrow keys
+## Controls:
+### Player 1:
+
+- Move: Arrow keys
+- Shoot: Shift
+
+### Player 2:
+
+- Move: WSAD
 - Shoot: Space
