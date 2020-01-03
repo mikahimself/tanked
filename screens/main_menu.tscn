@@ -126,11 +126,11 @@ stretch_mode = 6
 
 [node name="Audio_Move_Start" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
-volume_db = -15.0
+volume_db = -25.0
 
 [node name="Audio_Move" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
-volume_db = -15.0
+volume_db = -25.0
 [connection signal="focus_exited" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/NoOfPlayersButton" to="." method="_on_NoOfPlayersButton_focus_exited"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/NoOfPlayersButton" to="." method="_on_NoOfPlayersButton_pressed"]
 [connection signal="focus_exited" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/StartGameButton" to="." method="_on_StartGameButton_focus_exited"]
