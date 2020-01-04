@@ -2,7 +2,7 @@ extends Area2D
 
 onready var audio_explosion = $Audio_Explosion
 var speed: int = 250
-var damage: int = 5
+export (int) var damage = 5
 var velocity: Vector2 = Vector2()
 var explosion_scene: PackedScene = load("res://scenes/Explosion.tscn")
 var explosion: AnimationPlayer
@@ -24,6 +24,7 @@ func _on_Area2D_body_entered(body) -> void:
 	velocity = Vector2.ZERO
 	if body.is_in_group("tank"):
 		position = body.position
+		body.damage(damage)
 	explosion.visible = true
 	get_node("Sprite").visible = false
 	rotation_degrees = 0

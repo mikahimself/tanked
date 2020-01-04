@@ -5,6 +5,8 @@ export (float) var speed_fwd = 50
 export (float) var speed_rev = -30
 export (float) var rot_speed = 1.5
 export (float) var gun_cooldown_period = 0.5
+export (float) var max_health = 100
+onready var health = max_health setget _set_health
 
 # Rotation and velocity
 var rot_dir: int = 0
@@ -20,14 +22,18 @@ export (bool) var debug = false
 
 # Nodes
 onready var shadow = $shadow
-onready var shot_timer = $shot_timer
+onready var shot_timer = $ShotTimer
+onready var invulnerable_timer = $InvulnerableTimer
 onready var audio_shoot = $Audio_Shoot
+onready var effect_animation = $EffectAnimation
 
 # Identifiers
 var my_id: int = 0
 
 # Signals
 signal shot_bullet(bullet_position, bullet_direction)
+signal health_updated(health)
+signal killed()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -62,6 +68,27 @@ func _apply_movement(delta) -> void:
 func aim():
 	pass
 
+func damage(amount):
+	if invulnerable_timer.is_stopped():
+		invulnerable_timer.start()
+		_set_health(health - amount)
+		effect_animation.play("Damage")
+		effect_animation.queue("Invulnerable")
+		
+
+func kill_tank():
+	print("Killed")
+
+func _set_health(value):
+	var previous_health = health
+	health = clamp(value, 0, max_health)
+	if health != previous_health:
+		emit_signal("health_updated", health)
+
+	if health == 0:
+		kill_tank()
+		emit_signal("killed")
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	if is_cpu:
@@ -78,3 +105,7 @@ func shoot() -> void:
 	
 func _on_shot_timer_timeout() -> void:
 	can_shoot = true
+
+
+func _on_InvulnerableTimer_timeout():
+	effect_animation.play("Normal")

@@ -17,7 +17,6 @@ shader_param/amount = 0.0
 
 [node name="GameScreen" type="Node2D"]
 script = ExtResource( 1 )
-debug = true
 
 [node name="PauseMenu" type="Control" parent="."]
 pause_mode = 2

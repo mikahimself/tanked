@@ -23,7 +23,6 @@ func _on_ContinueButton_pressed():
 func _on_ContinueButton_focus_exited():
 	audio_move.play()
 
-
 func _on_BackToMenuButton_focus_exited():
 	audio_move.play()
 
