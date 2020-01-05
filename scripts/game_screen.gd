@@ -54,6 +54,7 @@ func setup_tanks() -> void:
 		enemy.position = current_level.start_positions[plr_id - 1]
 		enemy.rotation_degrees = current_level.start_rotations[plr_id - 1]
 		enemy.nav = nav
+		enemy.speed_fwd = 0.0
 		enemy.connect("shot_bullet", self, "on_bullet_shot")
 		cpu_tanks.append(enemy)
 		enemy.debug = false

@@ -31,7 +31,11 @@ func _get_transition(delta):
 	return null
 
 func _enter_state(new_state, old_state):
-	pass
+	match new_state:
+		states.drive_forward:
+			parent.play_engine_running()
+		states.idle:
+			parent.stop_engine_running()
 
 func _exit_state(old_state, new_state):
 	pass

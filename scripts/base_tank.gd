@@ -1,10 +1,15 @@
 extends KinematicBody2D
 
 # Adjustable values
-export (float) var speed_fwd = 50
+export (float) var acceleration = 0.1
+export (float) var deceleration = 0.5
+export (float) var speed_fwd_max = 50
+export (float) var speed_fwd = 0
+export (float) var speed_rev_max = -30
 export (float) var speed_rev = -30
 export (float) var rot_speed = 1.5
-export (float) var gun_cooldown_period = 0.5
+export (float) var shot_period = 0.5
+export (float) var invulnerability_period = 1.0
 export (float) var max_health = 100
 onready var health = max_health setget _set_health
 
@@ -23,8 +28,9 @@ export (bool) var debug = false
 # Nodes
 onready var shadow = $shadow
 onready var shot_timer = $ShotTimer
-onready var invulnerable_timer = $InvulnerableTimer
+onready var invulnerability_timer = $InvulnerabilityTimer
 onready var audio_shoot = $Audio_Shoot
+onready var audio_engine = $Audio_Engine
 onready var effect_animation = $EffectAnimation
 
 # Identifiers
@@ -37,7 +43,8 @@ signal killed()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	shot_timer.wait_time = gun_cooldown_period
+	shot_timer.wait_time = shot_period
+	invulnerability_timer.wait_time = invulnerability_period
 
 func _draw():
 	if debug:
@@ -51,6 +58,8 @@ func get_controls() -> void:
 
 func _process(delta):
 	offset_shadow()
+	set_engine_pitch()
+	set_track_particles()
 	update()
 
 func offset_shadow() -> void:
@@ -69,12 +78,11 @@ func aim():
 	pass
 
 func damage(amount):
-	if invulnerable_timer.is_stopped():
-		invulnerable_timer.start()
+	if invulnerability_timer.is_stopped():
+		invulnerability_timer.start()
 		_set_health(health - amount)
 		effect_animation.play("Damage")
 		effect_animation.queue("Invulnerable")
-		
 
 func kill_tank():
 	print("Killed")
@@ -95,6 +103,10 @@ func _physics_process(delta):
 		aim()
 	_apply_movement(delta)
 
+func set_engine_pitch():
+	var pitch = clamp(9.5 * (speed_fwd / speed_fwd_max), 0.01, 9.5)
+	audio_engine.pitch_scale = pitch
+
 func shoot() -> void:
 	can_shoot = false
 	var bullet_pos = global_position + bullet_offset.rotated(rotation)
@@ -106,6 +118,21 @@ func shoot() -> void:
 func _on_shot_timer_timeout() -> void:
 	can_shoot = true
 
-
 func _on_InvulnerableTimer_timeout():
 	effect_animation.play("Normal")
+
+func play_engine_running():
+	audio_engine.play()
+
+func stop_engine_running():
+	audio_engine.stop()
+
+func set_track_particles():
+	if $Particles_Track1.emitting:
+		if speed_fwd < 10:
+			$Particles_Track1.emitting = false
+			$Particles_Track2.emitting = false
+	else:
+		if speed_fwd > 5:
+			$Particles_Track1.emitting = true
+			$Particles_Track2.emitting = true

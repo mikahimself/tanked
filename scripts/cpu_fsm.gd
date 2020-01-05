@@ -30,7 +30,6 @@ func _state_logic(delta) -> void:
 
 # How/When to transition
 func _get_transition(delta):
-
 	angle_to_target = parent.get_angle_to_target()
 
 	match state:
@@ -119,7 +118,9 @@ func _get_transition(delta):
 
 # What do when entering a state. Use match.
 func _enter_state(new_state, old_state) -> void:
-	pass
+	match new_state:
+		states.drive_forward:
+			parent.play_engine_running()
 	
 # What do when exiting a state. Use match.
 func _exit_state(old_state, new_state) -> void:

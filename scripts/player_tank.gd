@@ -12,6 +12,10 @@ func get_controls():
 		rot_dir = 1
 		
 	if Input.is_action_pressed("forward_%s" % my_id):
+		speed_fwd = clamp(speed_fwd + acceleration, 0, speed_fwd_max)
+		velocity = Vector2(speed_fwd, 0).rotated(rotation)
+	else:
+		speed_fwd -= clamp(speed_fwd, 0, acceleration * 5)
 		velocity = Vector2(speed_fwd, 0).rotated(rotation)
 		
 	if Input.is_action_pressed("back_%s" % my_id):

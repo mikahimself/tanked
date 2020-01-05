@@ -1,10 +1,12 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/base_tank.gd" type="Script" id=1]
 [ext_resource path="res://sprites/tank_shadow.png" type="Texture" id=2]
 [ext_resource path="res://sprites/tank.png" type="Texture" id=3]
 [ext_resource path="res://audio/sfx/tank_shoot.wav" type="AudioStream" id=4]
 [ext_resource path="res://scenes/HealthBar.tscn" type="PackedScene" id=5]
+[ext_resource path="res://audio/sfx/engine_player.wav" type="AudioStream" id=6]
+[ext_resource path="res://art/Smoke.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 3 )
@@ -14,7 +16,7 @@ extents = Vector2( 8, 8 )
 
 [sub_resource type="Animation" id=3]
 resource_name = "Damage"
-length = 0.1
+length = 0.2
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("tank:modulate")
@@ -23,7 +25,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.05, 0.1 ),
+"times": PoolRealArray( 0, 0.1, 0.2 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 0.266667, 0.266667, 0.160784, 1 ), Color( 1, 1, 1, 1 ) ]
@@ -74,12 +76,23 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
+[sub_resource type="Curve" id=6]
+min_value = 0.1
+_data = [ Vector2( 0, 0.58564 ), 0.0, 0.0, 0, 0, Vector2( 0.513423, 0.36388 ), -0.553162, -0.553162, 0, 0, Vector2( 0.944028, 0.1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=7]
+offsets = PoolRealArray( 0, 0.559081, 1 )
+colors = PoolColorArray( 0.45098, 0.509804, 0.360784, 1, 0.690196, 0.721569, 0.498039, 1, 0.886275, 0.87451, 0.694118, 1 )
+
+[sub_resource type="Curve" id=8]
+_data = [ Vector2( 0.00872367, 0.1392 ), 0.0, 0.0, 0, 0, Vector2( 0.450067, 1 ), 1.09266, 1.09266, 0, 0, Vector2( 0.997719, 0.2558 ), 0.0, 0.0, 0, 0 ]
+
 [node name="base_tank" type="KinematicBody2D" groups=[
 "tank",
 ]]
 z_index = -2
 script = ExtResource( 1 )
-speed_fwd = 60.0
+acceleration = 0.5
 speed_rev = -40.0
 rot_speed = 2.0
 
@@ -106,7 +119,7 @@ shape = SubResource( 2 )
 stream = ExtResource( 4 )
 volume_db = -15.0
 
-[node name="InvulnerableTimer" type="Timer" parent="."]
+[node name="InvulnerabilityTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="EffectAnimation" type="AnimationPlayer" parent="."]
@@ -116,6 +129,60 @@ anims/Normal = SubResource( 5 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 5 )]
 position = Vector2( -26, -25 )
+
+[node name="Audio_Engine" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -25.0
+pitch_scale = 9.5
+
+[node name="Particles_Track1" type="CPUParticles2D" parent="."]
+show_behind_parent = true
+position = Vector2( -12, -6 )
+rotation = 1.5708
+emitting = false
+amount = 25
+lifetime = 0.3
+speed_scale = 0.5
+emission_shape = 1
+emission_sphere_radius = 2.0
+spread = 10.0
+initial_velocity = 0.25
+angle_random = 0.5
+scale_amount = 2.0
+scale_amount_curve = SubResource( 6 )
+color_ramp = SubResource( 7 )
+
+[node name="Particles_Track2" type="CPUParticles2D" parent="."]
+show_behind_parent = true
+position = Vector2( -12, 6 )
+rotation = 1.5708
+emitting = false
+amount = 25
+lifetime = 0.3
+speed_scale = 0.5
+emission_shape = 1
+emission_sphere_radius = 2.0
+spread = 10.0
+initial_velocity = 0.25
+angle_random = 0.5
+scale_amount = 2.0
+scale_amount_curve = SubResource( 6 )
+color_ramp = SubResource( 7 )
+
+[node name="Particles_Killed" type="CPUParticles2D" parent="."]
+visible = false
+position = Vector2( -1, 0 )
+rotation = 1.309
+amount = 20
+speed_scale = 0.3
+explosiveness = 0.05
+texture = ExtResource( 7 )
+emission_shape = 2
+emission_rect_extents = Vector2( 2, 2 )
+spread = 100.0
+angle = -15.0
+scale_amount = 1.5
+scale_amount_curve = SubResource( 8 )
 [connection signal="health_updated" from="." to="HealthBar" method="_on_base_tank_health_updated"]
 [connection signal="timeout" from="ShotTimer" to="." method="_on_shot_timer_timeout"]
-[connection signal="timeout" from="InvulnerableTimer" to="." method="_on_InvulnerableTimer_timeout"]
+[connection signal="timeout" from="InvulnerabilityTimer" to="." method="_on_InvulnerableTimer_timeout"]

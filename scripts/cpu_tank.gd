@@ -24,7 +24,6 @@ onready var ray_front_1 = get_node("Ray_Front_1")
 onready var ray_front_2 = get_node("Ray_Front_2")
 onready var ray_front_3 = get_node("Ray_Front_3")
 
-
 # CPU parametes
 export (int) var seek_distance = 40
 export (int) var shot_distance = 250
@@ -34,6 +33,7 @@ var is_line_to_target: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_physics_process(true)
+	print(speed_fwd)
 
 # Set target to player
 func set_goal(new_goal) -> void:
@@ -230,32 +230,43 @@ func set_turn_direction(target, state, states) -> void:
 
 func set_movement_velocity(state, states) -> void:
 	match state:
+		
 		states.drive_forward:
-			velocity = Vector2(speed_fwd, 0).rotated(rotation)
+			accelerate()
 		states.drive_backward:
 			velocity = Vector2(speed_rev, 0).rotated(rotation)
 		states.drive_around_block:
-			velocity = Vector2(speed_fwd, 0).rotated(rotation)
+			accelerate()
 		states.turn_right:
 			if get_front_raycast_length() > 120:
-				velocity = Vector2(speed_fwd, 0).rotated(rotation)
+				accelerate()
 			else:
-				velocity = Vector2.ZERO
+				decelerate()
 		states.turn_left:
 			if get_front_raycast_length() > 120:
-				velocity = Vector2(speed_fwd, 0).rotated(rotation)
+				accelerate()
 			else:
-				velocity = Vector2.ZERO
+				decelerate()
 		states.idle:
-			velocity = Vector2.ZERO
+			decelerate()
 		states.aim:
-			velocity = Vector2.ZERO
+			decelerate()
 		states.blocked:
-			velocity = Vector2.ZERO
+			decelerate()
 		states.turn_right_while_blocked:
-			velocity = Vector2.ZERO
+			decelerate()
 		states.turn_left_while_blocked:
-			velocity = Vector2.ZERO
+			decelerate()
+
+func accelerate() -> void:
+	speed_fwd += acceleration
+	speed_fwd = clamp(speed_fwd, 0, speed_fwd_max)
+	velocity = Vector2(speed_fwd, 0).rotated(rotation)
+
+func decelerate() -> void:
+	speed_fwd -= deceleration
+	speed_fwd = clamp(speed_fwd, 0, speed_fwd)
+	velocity = Vector2(speed_fwd, 0).rotated(rotation)
 
 func check_distance_to_waypoint() -> void:
 	if path.size() > 0:

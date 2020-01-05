@@ -5,7 +5,7 @@
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
-no_of_enemies = 1
+no_of_enemies = 3
 p1_start_position = Vector2( 64, 48 )
 p2_start_position = Vector2( 704, 368 )
 p3_start_position = Vector2( 64, 368 )
