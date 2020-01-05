@@ -2,6 +2,8 @@
 
 An old-timey, single or two player tank game inspired by Kee Games' Tank. Made with Godot Engine.
 
+<img src="https://github.com/mikahimself/tanked/blob/master/art/screenshots/tanked-screenshot.png" />
+
 ## Current features:
 - One or two player mode
 - CPU controlled tank(s) that chase the player
