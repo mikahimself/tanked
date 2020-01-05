@@ -5,7 +5,8 @@ An old-timey, single or two player tank game inspired by Kee Games' Tank. Made w
 ## Current features:
 - One or two player mode
 - CPU controlled tank(s) that chase the player
-- Bullets that do not damage anything
+- Explosions!
+- General lack of progression
 - Amazing Game Boy-esque graphics
 - Fantabulous pause menu
 
