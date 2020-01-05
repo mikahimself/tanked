@@ -170,15 +170,15 @@ scale_amount_curve = SubResource( 6 )
 color_ramp = SubResource( 7 )
 
 [node name="Particles_Killed" type="CPUParticles2D" parent="."]
-visible = false
 position = Vector2( -1, 0 )
 rotation = 1.309
-amount = 20
+emitting = false
+amount = 25
 speed_scale = 0.3
 explosiveness = 0.05
 texture = ExtResource( 7 )
 emission_shape = 2
-emission_rect_extents = Vector2( 2, 2 )
+emission_rect_extents = Vector2( 3, 2.5 )
 spread = 100.0
 angle = -15.0
 scale_amount = 1.5

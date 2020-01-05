@@ -19,17 +19,23 @@ func _ready():
 	add_state("turn_left")
 	add_state("aim")
 	add_state("blocked")
+	add_state("dead")
 	call_deferred("set_state", states.idle)
 
 func _state_logic(delta) -> void:
-	parent.check_distance_to_waypoint()
-	parent.set_movement_velocity(state, states)
-	parent.set_turn_direction(parent.get_target_direction(), state, states)
-	parent._apply_rotation(delta)
-	parent.check_shot_direction()
+	if state != states.dead:
+		parent.check_distance_to_waypoint()
+		parent.set_movement_velocity(state, states)
+		parent.set_turn_direction(parent.get_target_direction(), state, states)
+		parent._apply_rotation(delta)
+		parent.check_shot_direction()
 
 # How/When to transition
 func _get_transition(delta):
+	
+	if not parent.check_if_alive():
+		return states.dead
+
 	angle_to_target = parent.get_angle_to_target()
 
 	match state:
@@ -121,6 +127,8 @@ func _enter_state(new_state, old_state) -> void:
 	match new_state:
 		states.drive_forward:
 			parent.play_engine_running()
+		states.dead:
+			parent.stop_engine_running()
 	
 # What do when exiting a state. Use match.
 func _exit_state(old_state, new_state) -> void:

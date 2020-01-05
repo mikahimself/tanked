@@ -36,6 +36,12 @@ onready var effect_animation = $EffectAnimation
 # Identifiers
 var my_id: int = 0
 
+# Sound
+var min_pitch: float = 0.3
+var max_pitch: float = 9.5
+var min_percentage: float = 0.3
+var max_percentage: float = 1.0
+
 # Signals
 signal shot_bullet(bullet_position, bullet_direction)
 signal health_updated(health)
@@ -62,6 +68,12 @@ func _process(delta):
 	set_track_particles()
 	update()
 
+func check_if_alive():
+	if health == 0:
+		return false
+	else:
+		return true
+
 func offset_shadow() -> void:
 	shadow.position = shadow_offset.rotated(-rotation)
 	
@@ -78,14 +90,18 @@ func aim():
 	pass
 
 func damage(amount):
-	if invulnerability_timer.is_stopped():
+	if invulnerability_timer.is_stopped() and check_if_alive():
 		invulnerability_timer.start()
 		_set_health(health - amount)
 		effect_animation.play("Damage")
 		effect_animation.queue("Invulnerable")
 
 func kill_tank():
-	print("Killed")
+	speed_fwd = 0
+	velocity = Vector2.ZERO
+	$Particles_Killed.emitting = true
+	$HealthBar.visible = false
+
 
 func _set_health(value):
 	var previous_health = health
@@ -104,7 +120,8 @@ func _physics_process(delta):
 	_apply_movement(delta)
 
 func set_engine_pitch():
-	var pitch = clamp(9.5 * (speed_fwd / speed_fwd_max), 0.01, 9.5)
+	
+	var pitch = clamp(max_pitch * (clamp(speed_fwd / speed_fwd_max, min_percentage, max_percentage)), min_pitch, max_pitch)
 	audio_engine.pitch_scale = pitch
 
 func shoot() -> void:
