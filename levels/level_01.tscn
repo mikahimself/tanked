@@ -5,7 +5,7 @@
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
-no_of_enemies = 1
+no_of_enemies = 3
 level_name = "The Maze"
 p1_start_position = Vector2( 48, 48 )
 p2_start_position = Vector2( 716, 368 )
