@@ -47,7 +47,7 @@ func setup_tanks() -> void:
 		add_child(player)
 		plr_id += 1
 		
-	for i in range (0, current_level.no_of_enemies):
+	for i in range (0, game_data.no_of_enemies):
 		var enemy = game_data.CpuTank.instance()
 		enemy.is_cpu = true
 		enemy.my_id = plr_id

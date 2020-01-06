@@ -1,13 +1,13 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://themes/tanked_theme.tres" type="Theme" id=1]
-[ext_resource path="res://scripts/main_menu.gd" type="Script" id=2]
+[ext_resource path="res://scripts/match_options_screen.gd" type="Script" id=2]
 [ext_resource path="res://tilemap/tilemap.tres" type="TileSet" id=3]
-[ext_resource path="res://themes/fonts/title-font.tres" type="DynamicFont" id=4]
+[ext_resource path="res://themes/fonts/sub-title-font.tres" type="DynamicFont" id=4]
 [ext_resource path="res://art/logo.png" type="Texture" id=5]
 [ext_resource path="res://audio/sfx/menu_move.wav" type="AudioStream" id=6]
 
-[node name="MainMenu" type="Control"]
+[node name="MatchOptionsScreen" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 focus_next = NodePath("VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/StartGameButton")
@@ -39,81 +39,83 @@ margin_bottom = 398.0
 size_flags_vertical = 3
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/CenterContainer"]
-margin_left = 164.0
-margin_top = 33.0
-margin_right = 604.0
-margin_bottom = 365.0
+margin_left = 120.0
+margin_top = 49.0
+margin_right = 648.0
+margin_bottom = 349.0
 
 [node name="VBoxContainer_Title" type="VBoxContainer" parent="VBoxContainer/CenterContainer/VBoxContainer3"]
-editor/display_folded = true
-margin_right = 440.0
-margin_bottom = 112.0
+margin_right = 528.0
+margin_bottom = 80.0
 
 [node name="TitleLabel" type="Label" parent="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Title"]
-margin_right = 440.0
-margin_bottom = 112.0
+margin_right = 528.0
+margin_bottom = 80.0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 0.45098, 0.509804, 0.360784, 1 )
 custom_colors/font_color_shadow = Color( 0.266667, 0.266667, 0.160784, 1 )
-custom_constants/shadow_offset_x = 4
-custom_constants/shadow_offset_y = 4
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
 custom_constants/shadow_as_outline = 1
-text = "TANKED"
+text = "MATCH OPTIONS"
 align = 1
 
 [node name="VBoxContainer_Buttons" type="VBoxContainer" parent="VBoxContainer/CenterContainer/VBoxContainer3"]
-margin_left = 120.0
-margin_top = 116.0
-margin_right = 320.0
-margin_bottom = 332.0
+margin_left = 104.0
+margin_top = 84.0
+margin_right = 424.0
+margin_bottom = 300.0
 focus_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="CampaignButton" type="Button" parent="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons"]
-margin_right = 200.0
+[node name="EnemiesButton" type="Button" parent="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons"]
+margin_right = 320.0
 margin_bottom = 40.0
-focus_neighbour_left = NodePath("../QuitGameButton")
-focus_neighbour_top = NodePath("../QuitGameButton")
-focus_neighbour_right = NodePath("../QuickMatchButton")
-focus_neighbour_bottom = NodePath("../QuickMatchButton")
-focus_next = NodePath("../QuickMatchButton")
-focus_previous = NodePath("../QuitGameButton")
+rect_min_size = Vector2( 320, 0 )
+focus_neighbour_left = NodePath("../BackButton")
+focus_neighbour_top = NodePath("../BackButton")
+focus_neighbour_right = NodePath("../DifficultyButton")
+focus_neighbour_bottom = NodePath("../DifficultyButton")
+focus_next = NodePath("../DifficultyButton")
+focus_previous = NodePath("../BackButton")
 focus_mode = 1
 action_mode = 0
-text = "CAMPAIGN"
+text = "ENEMIES: 1"
 
-[node name="QuickMatchButton" type="Button" parent="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons"]
+[node name="DifficultyButton" type="Button" parent="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons"]
 margin_top = 44.0
-margin_right = 200.0
+margin_right = 320.0
 margin_bottom = 84.0
-focus_neighbour_left = NodePath("../CampaignButton")
-focus_neighbour_top = NodePath("../CampaignButton")
-focus_neighbour_right = NodePath("../MultiPlayerButton")
-focus_neighbour_bottom = NodePath("../MultiPlayerButton")
-focus_next = NodePath("../MultiPlayerButton")
-focus_previous = NodePath("../CampaignButton")
+rect_min_size = Vector2( 320, 0 )
+focus_neighbour_left = NodePath("../EnemiesButton")
+focus_neighbour_top = NodePath("../EnemiesButton")
+focus_neighbour_right = NodePath("../ContinueButton")
+focus_neighbour_bottom = NodePath("../ContinueButton")
+focus_next = NodePath("../ContinueButton")
+focus_previous = NodePath("../EnemiesButton")
 shortcut_in_tooltip = false
 action_mode = 0
-text = "QUICK MATCH"
+text = "DIFFICULTY: EASY"
 
-[node name="MultiPlayerButton" type="Button" parent="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons"]
+[node name="ContinueButton" type="Button" parent="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons"]
 margin_top = 88.0
-margin_right = 200.0
+margin_right = 320.0
 margin_bottom = 128.0
-focus_neighbour_left = NodePath("../QuickMatchButton")
-focus_neighbour_top = NodePath("../QuickMatchButton")
-focus_neighbour_right = NodePath("../QuitGameButton")
-focus_neighbour_bottom = NodePath("../QuitGameButton")
-focus_next = NodePath("../QuitGameButton")
-focus_previous = NodePath("../QuickMatchButton")
+rect_min_size = Vector2( 320, 0 )
+focus_neighbour_left = NodePath("../DifficultyButton")
+focus_neighbour_top = NodePath("../DifficultyButton")
+focus_neighbour_right = NodePath("../BackButton")
+focus_neighbour_bottom = NodePath("../BackButton")
+focus_next = NodePath("../BackButton")
+focus_previous = NodePath("../DifficultyButton")
 shortcut_in_tooltip = false
 action_mode = 0
-text = "MULTIPLAYER"
+text = "CONTINUE"
 
 [node name="BlankButton" type="Button" parent="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons"]
 margin_top = 132.0
-margin_right = 200.0
+margin_right = 320.0
 margin_bottom = 172.0
 focus_neighbour_top = NodePath("../StartGameButton")
 focus_neighbour_bottom = NodePath("../StartGameButton")
@@ -124,20 +126,20 @@ toggle_mode = true
 enabled_focus_mode = 1
 flat = true
 
-[node name="QuitGameButton" type="Button" parent="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons"]
+[node name="BackButton" type="Button" parent="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons"]
 margin_top = 176.0
-margin_right = 200.0
+margin_right = 320.0
 margin_bottom = 216.0
-focus_neighbour_left = NodePath("../MultiPlayerButton")
-focus_neighbour_top = NodePath("../MultiPlayerButton")
-focus_neighbour_right = NodePath("../CampaignButton")
-focus_neighbour_bottom = NodePath("../CampaignButton")
-focus_next = NodePath("../CampaignButton")
-focus_previous = NodePath("../MultiPlayerButton")
+focus_neighbour_left = NodePath("../ContinueButton")
+focus_neighbour_top = NodePath("../ContinueButton")
+focus_neighbour_right = NodePath("../EnemiesButton")
+focus_neighbour_bottom = NodePath("../EnemiesButton")
+focus_next = NodePath("../EnemiesButton")
+focus_previous = NodePath("../ContinueButton")
 focus_mode = 1
 toggle_mode = true
 enabled_focus_mode = 1
-text = "QUIT GAME"
+text = "BACK"
 
 [node name="CreatedByTexture" type="TextureRect" parent="VBoxContainer"]
 margin_top = 402.0
@@ -153,12 +155,12 @@ volume_db = -25.0
 [node name="Audio_Move" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 volume_db = -25.0
-[connection signal="focus_entered" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/CampaignButton" to="." method="_on_CampaignButton_focus_entered"]
-[connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/CampaignButton" to="." method="_on_CampaignButton_pressed"]
-[connection signal="focus_entered" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/QuickMatchButton" to="." method="_on_QuickMatchButton_focus_entered"]
-[connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/QuickMatchButton" to="." method="_on_QuickMatchButton_pressed"]
-[connection signal="focus_entered" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/MultiPlayerButton" to="." method="_on_MultiPlayerButton_focus_entered"]
-[connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/MultiPlayerButton" to="." method="_on_MultiPlayerButton_pressed"]
-[connection signal="focus_entered" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/QuitGameButton" to="." method="_on_QuitGameButton_focus_entered"]
-[connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/QuitGameButton" to="." method="_on_QuitGameButton_pressed"]
+[connection signal="focus_entered" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/EnemiesButton" to="." method="_on_EnemiesButton_focus_entered"]
+[connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/EnemiesButton" to="." method="_on_EnemiesButton_pressed"]
+[connection signal="focus_entered" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/DifficultyButton" to="." method="_on_DifficultyButton_focus_entered"]
+[connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/DifficultyButton" to="." method="_on_DifficultyButton_pressed"]
+[connection signal="focus_entered" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/ContinueButton" to="." method="_on_ContinueButton_focus_entered"]
+[connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/ContinueButton" to="." method="_on_ContinueButton_pressed"]
+[connection signal="focus_entered" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/BackButton" to="." method="_on_BackButton_focus_entered"]
+[connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="finished" from="Audio_Move_Start" to="." method="_on_Audio_Move_Start_finished"]

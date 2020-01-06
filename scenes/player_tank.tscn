@@ -7,7 +7,7 @@
 [node name="player" groups=[
 "player",
 ] instance=ExtResource( 1 )]
-z_index = -3
+z_index = -1
 z_as_relative = false
 script = ExtResource( 2 )
 invulnerability_period = 2.5
@@ -17,3 +17,6 @@ script = ExtResource( 3 )
 
 [node name="Audio_Engine" parent="." index="10"]
 bus = "PlayerTank"
+
+[node name="Particles_Killed" parent="." index="13"]
+z_index = 5

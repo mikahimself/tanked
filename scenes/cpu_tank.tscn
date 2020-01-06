@@ -120,3 +120,6 @@ stream = ExtResource( 5 )
 volume_db = -30.0
 mix_target = 2
 bus = "EnemyTank"
+
+[node name="Particles_Killed" parent="." index="24"]
+z_index = 5
