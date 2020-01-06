@@ -110,7 +110,7 @@ texture = ExtResource( 3 )
 
 [node name="ShotTimer" type="Timer" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="TankBody" type="CollisionShape2D" parent="."]
 position = Vector2( -4, 0 )
 rotation = 1.5708
 shape = SubResource( 2 )

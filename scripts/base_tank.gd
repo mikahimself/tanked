@@ -101,7 +101,7 @@ func kill_tank():
 	velocity = Vector2.ZERO
 	$Particles_Killed.emitting = true
 	$HealthBar.visible = false
-
+	$TankBody.call_deferred("set_disabled", true)
 
 func _set_health(value):
 	var previous_health = health
