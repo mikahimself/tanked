@@ -28,7 +28,7 @@ var CpuTank: PackedScene = preload("res://scenes/cpu_tank.tscn")
 var tanks: Array = []
 
 # Level info
-var current_level: int = 4
+var current_level: int = 2
 
 func _ready():
 	_setup_level_array()
@@ -68,3 +68,6 @@ func set_difficulty(difficulty):
 	difficulty_level = difficulty
 	if difficulty_level >= difficulty_levels.size():
 		difficulty_level = 0
+
+func get_difficulty() -> String:
+	return difficulty_levels[difficulty_level]

@@ -28,12 +28,26 @@ onready var ray_front_3 = get_node("Ray_Front_3")
 export (int) var seek_distance = 40
 export (int) var shot_distance = 250
 
+# Shot Distance, Speed, Shot Timeout, Invulnerability Timeout
+var easy_params: Array = [150, 35, 3.0, 0.5]
+var norm_params: Array = [250, 40, 2.0, 0.75]
+var hard_params: Array = [450, 50, 1.0, 1.0]
+
+var difficulty_params: Dictionary = {
+	"EASY": [150, 35, 3.0, 0.5],
+	"NORMAL": [250, 40, 2.0, 0.75],
+	"HARD": [450, 50, 1.0, 1.0]
+}
+
 var is_line_to_target: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_physics_process(true)
-	print(speed_fwd)
+	set_difficulty(game_data.get_difficulty())
+	print(difficulty_params["EASY"][0])
+	
+
 
 # Set target to player
 func set_goal(new_goal) -> void:
@@ -41,6 +55,13 @@ func set_goal(new_goal) -> void:
 	target = new_goal
 	if (nav):
 		update_path()
+
+func set_difficulty(diff_level) -> void:
+	ray_gun.set_cast_to(Vector2(difficulty_params[diff_level][0], 0))
+	speed_fwd_max = difficulty_params[diff_level][1]
+	shot_timer.wait_time = difficulty_params[diff_level][2]
+	invulnerability_timer.wait_time = difficulty_params[diff_level][3]
+
 
 # Update navigation
 func set_nav(new_nav) -> void:
