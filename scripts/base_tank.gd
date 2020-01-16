@@ -120,7 +120,6 @@ func _physics_process(delta):
 	_apply_movement(delta)
 
 func set_engine_pitch():
-	
 	var pitch = clamp(max_pitch * (clamp(speed_fwd / speed_fwd_max, min_percentage, max_percentage)), min_pitch, max_pitch)
 	audio_engine.pitch_scale = pitch
 
