@@ -15,7 +15,7 @@ onready var rng = RandomNumberGenerator.new()
 
 var target: PackedScene = load("res://scenes/target.tscn")
 var bullet: PackedScene = load("res://scenes/bullet.tscn")
-var health_bar: PackedScene = load("res://scenes/HealthBar.tscn")
+var health_bar: PackedScene = load("res://scenes/health_bar.tscn")
 
 
 var current_level: Node2D

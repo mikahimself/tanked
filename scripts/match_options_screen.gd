@@ -24,11 +24,13 @@ func _on_DifficultyButton_pressed():
 
 func _on_ContinueButton_pressed():
 	audio_move.play()
-	get_tree().change_scene("res://screens/game_screen.tscn")
+	SceneChanger.change_scene("res://screens/game_screen.tscn", 0, true)
+	#get_tree().change_scene("res://screens/game_screen.tscn")
 
 func _on_BackButton_pressed():
 	audio_move.play()
-	get_tree().change_scene("res://screens/main_menu.tscn")
+	SceneChanger.change_scene("res://screens/main_menu.tscn", 0, false)
+	#get_tree().change_scene("res://screens/main_menu.tscn")
 
 
 # Button Sounds

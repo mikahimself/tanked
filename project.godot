@@ -27,6 +27,7 @@ config/icon="res://icon.png"
 [autoload]
 
 game_data="*res://scripts/game_data.gd"
+SceneChanger="*res://scenes/scene_changer.tscn"
 
 [display]
 

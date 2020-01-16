@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://scripts/HealthBar.gd" type="Script" id=1]
+[ext_resource path="res://scripts/health_bar.gd" type="Script" id=1]
 [ext_resource path="res://art/HealthBar-Under.png" type="Texture" id=2]
 [ext_resource path="res://art/HealthBar-Over.png" type="Texture" id=3]
 [ext_resource path="res://art/HealthBar-Progress-Tween.png" type="Texture" id=4]

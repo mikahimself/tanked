@@ -25,7 +25,7 @@ func _on_QuitGameButton_pressed():
 	get_tree().quit()
 	
 func _on_Audio_Move_Start_finished():
-	get_tree().change_scene("res://screens/match_options_screen.tscn")
+	SceneChanger.change_scene("res://screens/match_options_screen.tscn", 0, false)
 
 # Focus Sounds
 func _on_CampaignButton_focus_entered():
