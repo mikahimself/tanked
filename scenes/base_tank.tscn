@@ -1,13 +1,10 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scripts/base_tank.gd" type="Script" id=1]
 [ext_resource path="res://sprites/tank_shadow.png" type="Texture" id=2]
 [ext_resource path="res://sprites/tank.png" type="Texture" id=3]
-[ext_resource path="res://audio/sfx/tank_shoot.wav" type="AudioStream" id=4]
-[ext_resource path="res://scenes/health_bar.tscn" type="PackedScene" id=5]
-[ext_resource path="res://audio/sfx/engine_player.wav" type="AudioStream" id=6]
-[ext_resource path="res://art/Smoke.png" type="Texture" id=7]
-
+[ext_resource path="res://scenes/health_bar.tscn" type="PackedScene" id=4]
+[ext_resource path="res://art/Smoke.png" type="Texture" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 3 )
@@ -116,10 +113,6 @@ position = Vector2( -4, 0 )
 rotation = 1.5708
 shape = SubResource( 2 )
 
-[node name="Audio_Shoot" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 4 )
-volume_db = -15.0
-
 [node name="InvulnerabilityTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -128,13 +121,8 @@ anims/Damage = SubResource( 3 )
 anims/Invulnerable = SubResource( 4 )
 anims/Normal = SubResource( 5 )
 
-[node name="HealthBar" parent="." instance=ExtResource( 5 )]
+[node name="HealthBar" parent="." instance=ExtResource( 4 )]
 position = Vector2( -26, -25 )
-
-[node name="Audio_Engine" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 6 )
-volume_db = -25.0
-pitch_scale = 9.5
 
 [node name="Particles_Track1" type="CPUParticles2D" parent="."]
 show_behind_parent = true
@@ -177,7 +165,7 @@ emitting = false
 amount = 25
 speed_scale = 0.3
 explosiveness = 0.05
-texture = ExtResource( 7 )
+texture = ExtResource( 5 )
 emission_shape = 2
 emission_rect_extents = Vector2( 3, 2.5 )
 spread = 100.0

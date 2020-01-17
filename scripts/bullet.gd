@@ -1,6 +1,5 @@
 extends Area2D
 
-onready var audio_explosion = $Audio_Explosion
 var speed: int = 250
 export (int) var damage = 5
 var velocity: Vector2 = Vector2()
@@ -28,7 +27,7 @@ func _on_Area2D_body_entered(body) -> void:
 	explosion.visible = true
 	get_node("Sprite").visible = false
 	rotation_degrees = 0
-	audio_explosion.play()
+	audio_player.explosion.play()
 	explosion.get_node("AnimationPlayer").play("Explosion")
 	
 func _on_anim_finished(anim_name) -> void:

@@ -10,8 +10,8 @@ export (float) var speed_rev = -30
 export (float) var rot_speed = 1.5
 export (float) var shot_period = 0.5
 export (float) var invulnerability_period = 1.0
-export (float) var max_health = 100
-onready var health = max_health setget _set_health
+export (int) var max_health = 100
+onready var health: int = max_health setget _set_health
 
 # Rotation and velocity
 var rot_dir: int = 0
@@ -26,21 +26,20 @@ var is_cpu: bool = false
 export (bool) var debug = false
 
 # Nodes
-onready var shadow = $shadow
-onready var shot_timer = $ShotTimer
-onready var invulnerability_timer = $InvulnerabilityTimer
-onready var audio_shoot = $Audio_Shoot
-onready var audio_engine = $Audio_Engine
-onready var effect_animation = $EffectAnimation
+onready var shadow: Sprite = $shadow
+onready var shot_timer: Timer = $ShotTimer
+onready var invulnerability_timer: Timer = $InvulnerabilityTimer
+onready var effect_animation: AnimationPlayer = $EffectAnimation
 
 # Identifiers
 var my_id: int = 0
 
-# Sound
+# Sound related
 var min_pitch: float = 0.3
 var max_pitch: float = 9.5
 var min_percentage: float = 0.3
 var max_percentage: float = 1.0
+var audio_engine: AudioStreamPlayer
 
 # Signals
 signal shot_bullet(bullet_position, bullet_direction)
@@ -51,6 +50,10 @@ signal killed()
 func _ready():
 	shot_timer.wait_time = shot_period
 	invulnerability_timer.wait_time = invulnerability_period
+	if is_cpu:
+		audio_engine = audio_player.engine_cpu
+	else:
+		audio_engine = audio_player.engine_player
 
 func _draw():
 	if debug:
@@ -68,7 +71,7 @@ func _process(delta):
 	set_track_particles()
 	update()
 
-func check_if_alive():
+func check_if_alive() -> bool:
 	if health == 0:
 		return false
 	else:
@@ -86,24 +89,24 @@ func _apply_movement(delta) -> void:
 		if collision:
 			velocity = velocity.slide(collision.normal)
 
-func aim():
+func aim() -> void:
 	pass
 
-func damage(amount):
+func damage(amount) -> void:
 	if invulnerability_timer.is_stopped() and check_if_alive():
 		invulnerability_timer.start()
 		_set_health(health - amount)
 		effect_animation.play("Damage")
 		effect_animation.queue("Invulnerable")
 
-func kill_tank():
+func kill_tank() -> void:
 	speed_fwd = 0
 	velocity = Vector2.ZERO
 	$Particles_Killed.emitting = true
 	$HealthBar.visible = false
 	$TankBody.call_deferred("set_disabled", true)
 
-func _set_health(value):
+func _set_health(value) -> void:
 	var previous_health = health
 	health = clamp(value, 0, max_health)
 	if health != previous_health:
@@ -121,7 +124,8 @@ func _physics_process(delta):
 
 func set_engine_pitch():
 	var pitch = clamp(max_pitch * (clamp(speed_fwd / speed_fwd_max, min_percentage, max_percentage)), min_pitch, max_pitch)
-	audio_engine.pitch_scale = pitch
+	if audio_engine != null:
+		audio_engine.pitch_scale = pitch
 
 func shoot() -> void:
 	can_shoot = false
@@ -129,7 +133,7 @@ func shoot() -> void:
 	var bullet_dir_now = bullet_dir.rotated(rotation)
 	shot_timer.start()
 	emit_signal("shot_bullet", bullet_pos, bullet_dir_now)
-	audio_shoot.play()
+	audio_player.shot.play()
 	
 func _on_shot_timer_timeout() -> void:
 	can_shoot = true
@@ -137,13 +141,13 @@ func _on_shot_timer_timeout() -> void:
 func _on_InvulnerableTimer_timeout():
 	effect_animation.play("Normal")
 
-func play_engine_running():
+func play_engine_running() -> void:
 	audio_engine.play()
 
-func stop_engine_running():
+func stop_engine_running() -> void:
 	audio_engine.stop()
 
-func set_track_particles():
+func set_track_particles() -> void:
 	if $Particles_Track1.emitting:
 		if speed_fwd < 10:
 			$Particles_Track1.emitting = false

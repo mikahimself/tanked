@@ -45,9 +45,6 @@ var is_line_to_target: bool = false
 func _ready():
 	set_physics_process(true)
 	set_difficulty(game_data.get_difficulty())
-	print(difficulty_params["EASY"][0])
-	
-
 
 # Set target to player
 func set_goal(new_goal) -> void:
@@ -324,4 +321,3 @@ func check_shot_direction() -> void:
 		elif body.is_in_group("player"):
 			if can_shoot:
 				shoot()
-					

@@ -16,10 +16,11 @@ volume_db = -25.0
 
 [node name="Shot" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+volume_db = -15.0
 
 [node name="EnginePlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
-volume_db = -25.0
+volume_db = -30.0
 pitch_scale = 9.5
 
 [node name="EngineCPU" type="AudioStreamPlayer" parent="."]
