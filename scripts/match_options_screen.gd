@@ -7,7 +7,7 @@ func _ready():
 	enemies_button.grab_focus()
 	difficulty_button.set_text("DIFFICULTY: %s" % game_data.difficulty_levels[game_data.difficulty_level])
 	enemies_button.set_text("ENEMIES: %d" % game_data.no_of_enemies)
-	#audio_player.move.stop()
+	audio_player.move.stop()
 
 # Button Actions
 func _on_EnemiesButton_pressed():
@@ -25,7 +25,7 @@ func _on_ContinueButton_pressed():
 	scene_changer.change_scene("res://screens/game_screen.tscn", 0, true)
 
 func _on_BackButton_pressed():
-	audio_player.move.play()
+	audio_player.move_scene.play()
 	scene_changer.change_scene("res://screens/main_menu.tscn", 0, false)
 
 # Button Focus Sounds

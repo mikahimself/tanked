@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/base_tank.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/player_tank.gd" type="Script" id=2]
 [ext_resource path="res://scripts/player_fsm.gd" type="Script" id=3]
+[ext_resource path="res://audio/sfx/engine_player.wav" type="AudioStream" id=4]
 
 [node name="player" groups=[
 "player",
@@ -15,8 +16,10 @@ invulnerability_period = 2.5
 [node name="StateMachine" type="Node2D" parent="." index="5"]
 script = ExtResource( 3 )
 
-[node name="Audio_Engine" parent="." index="10"]
-bus = "PlayerTank"
-
-[node name="Particles_Killed" parent="." index="13"]
+[node name="Particles_Killed" parent="." index="11"]
 z_index = 5
+
+[node name="AudioEngine" parent="." index="12"]
+stream = ExtResource( 4 )
+volume_db = -30.0
+pitch_scale = 9.5

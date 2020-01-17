@@ -30,6 +30,8 @@ onready var shadow: Sprite = $shadow
 onready var shot_timer: Timer = $ShotTimer
 onready var invulnerability_timer: Timer = $InvulnerabilityTimer
 onready var effect_animation: AnimationPlayer = $EffectAnimation
+onready var audio_engine = $AudioEngine
+onready var audio_shot = $AudioShot
 
 # Identifiers
 var my_id: int = 0
@@ -39,7 +41,6 @@ var min_pitch: float = 0.3
 var max_pitch: float = 9.5
 var min_percentage: float = 0.3
 var max_percentage: float = 1.0
-var audio_engine: AudioStreamPlayer
 
 # Signals
 signal shot_bullet(bullet_position, bullet_direction)
@@ -50,10 +51,6 @@ signal killed()
 func _ready():
 	shot_timer.wait_time = shot_period
 	invulnerability_timer.wait_time = invulnerability_period
-	if is_cpu:
-		audio_engine = audio_player.engine_cpu
-	else:
-		audio_engine = audio_player.engine_player
 
 func _draw():
 	if debug:
@@ -104,7 +101,19 @@ func kill_tank() -> void:
 	velocity = Vector2.ZERO
 	$Particles_Killed.emitting = true
 	$HealthBar.visible = false
-	$TankBody.call_deferred("set_disabled", true)
+	set_collision_layer_and_mask(true)
+	
+func set_collision_layer_and_mask(is_dead: bool) -> void:
+	if is_dead:
+		set_collision_layer_bit(5, true)
+		set_collision_layer_bit(0, false)
+		set_collision_mask_bit(0, false)
+		set_collision_mask_bit(4, false)
+	else:
+		set_collision_layer_bit(5, false)
+		set_collision_layer_bit(0, true)
+		set_collision_mask_bit(0, true)
+		set_collision_mask_bit(4, true)
 
 func _set_health(value) -> void:
 	var previous_health = health
@@ -133,7 +142,7 @@ func shoot() -> void:
 	var bullet_dir_now = bullet_dir.rotated(rotation)
 	shot_timer.start()
 	emit_signal("shot_bullet", bullet_pos, bullet_dir_now)
-	audio_player.shot.play()
+	audio_shot.play()
 	
 func _on_shot_timer_timeout() -> void:
 	can_shoot = true

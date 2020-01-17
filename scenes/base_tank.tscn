@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scripts/base_tank.gd" type="Script" id=1]
 [ext_resource path="res://sprites/tank_shadow.png" type="Texture" id=2]
 [ext_resource path="res://sprites/tank.png" type="Texture" id=3]
 [ext_resource path="res://scenes/health_bar.tscn" type="PackedScene" id=4]
 [ext_resource path="res://art/Smoke.png" type="Texture" id=5]
+[ext_resource path="res://audio/sfx/tank_shoot.wav" type="AudioStream" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 3 )
@@ -89,6 +90,7 @@ _data = [ Vector2( 0.00872367, 0.1392 ), 0.0, 0.0, 0, 0, Vector2( 0.450067, 1 ),
 "tank",
 ]]
 z_index = -2
+collision_mask = 31
 script = ExtResource( 1 )
 acceleration = 0.5
 speed_rev = -40.0
@@ -172,6 +174,12 @@ spread = 100.0
 angle = -15.0
 scale_amount = 1.5
 scale_amount_curve = SubResource( 8 )
+
+[node name="AudioEngine" type="AudioStreamPlayer" parent="."]
+
+[node name="AudioShot" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -15.0
 [connection signal="health_updated" from="." to="HealthBar" method="_on_base_tank_health_updated"]
 [connection signal="timeout" from="ShotTimer" to="." method="_on_shot_timer_timeout"]
 [connection signal="timeout" from="InvulnerabilityTimer" to="." method="_on_InvulnerableTimer_timeout"]

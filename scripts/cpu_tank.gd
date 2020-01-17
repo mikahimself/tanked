@@ -110,9 +110,8 @@ func aim():
 		var space_state = get_world_2d().direct_space_state
 		var result = space_state.intersect_ray(position, target.position, [self])
 		if result != null:
-			if result.collider != null:
-				if result.collider == target:
-					is_line_to_target = true
+			if result.collider != null and result.collider == target:
+				is_line_to_target = true
 
 func is_target_directly_behind() -> bool:
 	if path.size() > 0:

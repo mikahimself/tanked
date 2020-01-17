@@ -12,7 +12,7 @@ func _on_CampaignButton_pressed():
 	game_data.game_mode = game_data.game_modes.CAMPAIGN
 
 func _on_QuickMatchButton_pressed():
-	audio_player.move.play()
+	audio_player.move_scene.play()
 	game_data.game_mode = game_data.game_modes.QUICK_MATCH
 	scene_changer.change_scene("res://screens/match_options_screen.tscn", 0, false)
 	
@@ -21,6 +21,7 @@ func _on_MultiPlayerButton_pressed():
 
 func _on_QuitGameButton_pressed():
 	audio_player.move.play()
+	yield(audio_player.move, "finished")
 	get_tree().quit()
 	
 

@@ -1,13 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/bullet.gd" type="Script" id=1]
 [ext_resource path="res://sprites/bullet.png" type="Texture" id=2]
 [ext_resource path="res://scenes/explosion.tscn" type="PackedScene" id=3]
+[ext_resource path="res://audio/sfx/bullet_explosion.wav" type="AudioStream" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 3 )
 
 [node name="Area2D" type="Area2D"]
+collision_layer = 16
+collision_mask = 19
 script = ExtResource( 1 )
 damage = 15
 
@@ -18,4 +21,8 @@ texture = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="Explosion" parent="." instance=ExtResource( 3 )]
+
+[node name="AudioExplosion" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -15.0
 [connection signal="body_entered" from="." to="." method="_on_Area2D_body_entered"]

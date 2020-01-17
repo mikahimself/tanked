@@ -28,6 +28,7 @@ func _ready():
 	rng.randomize()
 	path_update_timer.wait_time = search_interval
 	path_update_timer.start()
+	get_tree().paused = false
 
 func setup_level() -> void:
 	var level = load(game_data.levels[game_data.current_level])
@@ -36,6 +37,8 @@ func setup_level() -> void:
 
 func setup_tanks() -> void:
 	var plr_id = 1
+	player_tanks = []
+	cpu_tanks = []
 	
 	for i in range (0, game_data.no_of_players):
 		var player = game_data.PlayerTank.instance()
@@ -120,7 +123,7 @@ func on_bullet_shot(bullet_position, bullet_direction) -> void:
 	bullet_container.add_child(b)
 	b.start(bullet_position, bullet_direction)
 
-func quit_game():
-	player_tanks = []
-	cpu_tanks = []
-	get_tree().change_scene("res://screens/main_menu.tscn")
+#func quit_game():
+
+#	scene_changer.change_scene("res://screens/main_menu.tscn")
+	#get_tree().change_scene("res://screens/main_menu.tscn")
